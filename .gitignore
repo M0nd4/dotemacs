@@ -1,3 +1,7 @@
 *.FASL
 *.fasl
 *.lisp-temp
+*elc
+.DS_Store
+starter-kit-2.*
+*.tar
