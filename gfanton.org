@@ -1,0 +1,309 @@
+#+TITLE: Emacs configuration file
+#+AUTHOR: gfatnon
+#+BABEL: :cache yes
+#+LATEX_HEADER: \usepackage{parskip}
+#+LATEX_HEADER: \usepackage{inconsolata}
+#+PROPERTY: header-args :tangle yes :comments org
+
+* Inialisation
+** Personal information
+initialize personal information
+#+BEGIN_SRC emacs-lisp
+   (setq user-full-name "Guilhem Fanton"
+   user-mail-address "guilhem.fanton@gmail.com")
+#+END_SRC
+
+** Encodage
+   Set =utf-8= as preferred coding system.
+
+   #+BEGIN_SRC emacs-lisp
+     (set-language-environment "UTF-8")
+   #+END_SRC
+   
+** Emacs initialization
+*** Add package sources
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+(unless (assoc-default "melpa" package-archives)
+  (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+  (package-refresh-contents))
+#+END_SRC
+
+*** load files
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'load-path "~/elisp")
+(unless (package-installed-p 'use-package)
+  (package-install 'use-package))
+(setq use-package-verbose t)
+(require 'use-package)
+(use-package dash
+  :ensure t)
+(use-package auto-compile
+  :ensure t
+  :config (auto-compile-on-load-mode))
+(setq load-prefer-newer t)
+#+END_SRC
+`
+** OS Configuration 
+*** MAC OSX
+#+BEGIN_SRC emacs-lisp
+(when (memq window-system '(mac ns))
+  (setq mac-option-modifier nil
+        mac-command-modifier 'meta
+        x-select-enable-clipboard t)
+  (exec-path-from-shell-initialize))
+#+END_SRC
+** load files
+*** private
+#+BEGIN_SRC emacs-lisp
+(load "~/.emacs.private" t)
+#+END_SRC
+
+*** custom directory
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'load-path "~/elisp") 
+#+END_SRC
+** Windows
+#+BEGIN_SRC emacs-lisp
+(when window-system
+  (tooltip-mode -1)
+  (tool-bar-mode -1)
+  (menu-bar-mode -1)
+  (scroll-bar-mode -1))
+#+END_SRC
+
+* Configuration
+** Visual
+*** Color Theme
+Monokai Color Theme
+#+BEGIN_SRC emacs-lisp
+(use-package color-theme
+	:ensure t
+	:init (use-package monokai-theme :ensure t)
+	:config (load-theme 'monokai t))
+#+END_SRC
+
+*** font
+Use the Inconsolata font if it’s installed on the system.
+#+BEGIN_SRC emacs-lisp
+(when (member "Inconsolata" (font-family-list))
+  (set-face-attribute 'default nil :font "Inconsolata-14"))
+#+END_SRC
+
+** Undo - Redo
+*** undo-tree
+#+BEGIN_SRC emacs-lisp
+(use-package undo-tree
+  :defer t
+  :ensure t
+  :diminish undo-tree-mode
+  :config
+  (progn
+    (global-undo-tree-mode)
+    (setq undo-tree-visualizer-timestamps t)
+    (setq undo-tree-visualizer-diff t)))
+#+END_SRC
+
+*** winner-mode
+#+BEGIN_SRC emacs-lisp
+(use-package winner
+  :ensure t
+  :defer t
+  :config (winner-mode 1))
+#+END_SRC
+
+** Ido
+
+install ido
+
+#+BEGIN_SRC emacs-lisp
+(use-package ido
+  :config
+  (progn
+  (ido-mode 1)
+  (ido-everywhere 1)
+  (setq ido-default-buffer-method 'selected-window)
+  (add-hook 'ido-make-file-list-hook 'ido-sort-mtime)
+  (add-hook 'ido-make-dir-list-hook 'ido-sort-mtime)
+  (defun ido-sort-mtime ()
+    (setq ido-temp-list
+          (sort ido-temp-list
+                (lambda (a b)
+                  (let ((ta (nth 5 (file-attributes (concat ido-current-directory a))))
+                        (tb (nth 5 (file-attributes (concat ido-current-directory b)))))
+                    (if (= (nth 0 ta) (nth 0 tb))
+                        (> (nth 1 ta) (nth 1 tb))
+                      (> (nth 0 ta) (nth 0 tb)))))))
+    (ido-to-end  ;; move . files to end (again)
+     (delq nil (mapcar
+                (lambda (x) (if (string-equal (substring x 0 1) ".") x))
+                ido-temp-list))))))
+#+END_SRC
+
+ido ubiquitous
+
+#+BEGIN_SRC emacs-lisp
+(use-package ido-ubiquitous
+	:ensure t
+	:init
+	(setq org-completion-use-ido t)
+	(setq magit-completing-read-function 'magit-ido-completing-read)
+	:config
+	(ido-ubiquitous-mode 1))
+#+END_SRC
+
+** History
+#+BEGIN_SRC emacs-lisp
+(setq savehist-file "~/.emacs.d/savehist")
+(savehist-mode 1)
+(setq history-length t)
+(setq history-delete-duplicates t)
+(setq savehist-save-minibuffer-history 1)
+(setq savehist-additional-variables
+      '(kill-ring
+        search-ring
+        regexp-search-ring))
+#+END_SRC
+
+** Copy and Past
+#+BEGIN_SRC emacs-lisp
+(when (memq window-system '(mac ns))
+	(setq x-select-enable-clipboard t)
+	(setq interprogram-paste-function 'x-cut-buffer-or-selection-value))
+#+END_SRC
+
+** Whitespace
+
+No whitespace at the end of the line
+
+#+BEGIN_SRC emacs-lisp
+(defun del-end-whitespace ()
+  "Deletes all blank lines at the end of the file, even the last one"
+  (interactive)
+  (save-excursion
+    (save-restriction
+      (widen)
+      (goto-char (point-max))
+      (delete-blank-lines)
+      (let ((trailnewlines (abs (skip-chars-backward "\n\t"))))
+      (if (> trailnewlines 1)
+          (progn
+	        (delete-char trailnewlines)))))))
+#+END_SRC
+** auto-complete
+#+BEGIN_SRC emacs-lisp
+(use-package company
+  :ensure t 
+  :config
+  (add-hook 'prog-mode-hook 'company-mode))
+#+END_SRC 
+
+** tabbar
+
+stabbar mode
+
+#+BEGIN_SRC emacs-lisp
+(use-package tabbar
+	:ensure t
+	:config
+
+(set-face-attribute
+ 'tabbar-default nil
+ :background "gray20"
+ :foreground "gray20"
+ :box '(:line-width 1 :color "gray20" :style nil))
+(set-face-attribute
+ 'tabbar-unselected nil
+ :background "gray30"
+ :foreground "white"
+ :box '(:line-width 5 :color "gray30" :style nil))
+(set-face-attribute
+ 'tabbar-selected nil
+ :background "gray75"
+ :foreground "#A41F99"
+ :box '(:line-width 5 :color "gray75" :style nil))
+(set-face-attribute
+ 'tabbar-highlight nil
+ :background "white"
+ :foreground "black"
+ :underline nil
+ :box '(:line-width 5 :color "white" :style nil))
+(set-face-attribute
+ 'tabbar-button nil
+ :box '(:line-width 1 :color "gray20" :style nil))
+(set-face-attribute
+ 'tabbar-separator nil
+ :background "grey20"
+ :height 0.1)
+
+;; Change padding of the tabs
+;; we also need to set separator to avoid overlapping tabs by highlighted tabs
+(custom-set-variables
+ '(tabbar-separator (quote (1.0))))
+;; adding spaces
+(defun tabbar-buffer-tab-label (tab)
+  "Return a label for TAB.
+That is, a string used to represent it on the tab bar."
+  (let ((label  (if tabbar--buffer-show-groups
+                    (format " [%s] " (tabbar-tab-tabset tab))
+                  (format " %s " (tabbar-tab-value tab)))))
+    ;; Unless the tab bar auto scrolls to keep the selected tab
+    ;; visible, shorten the tab label to keep as many tabs as possible
+    ;; in the visible area of the tab bar.
+    (if tabbar-auto-scroll-flag
+        label
+      (tabbar-shorten
+       label (max 1 (/ (window-width)
+                       (length (tabbar-view
+                                (tabbar-current-tabset)))))))))
+(tabbar-mode t)
+)
+#+END_SRC 
+
+** Ace Jump :drill:
+:PROPERTIES:
+    :ID:       56f173e7-d2a2-4589-84d7-c6b435c8a5f8
+    :DRILL_LAST_INTERVAL: 0.0
+    :DRILL_REPEATS_SINCE_FAIL: 1
+    :DRILL_TOTAL_REPEATS: 3
+    :DRILL_FAILURE_COUNT: 2
+    :DRILL_AVERAGE_QUALITY: 1.667
+    :DRILL_EASE: 2.36
+    :DRILL_LAST_QUALITY: 0
+    :DRILL_LAST_REVIEWED: [2013-03-13 Wed 09:50]
+    :END:
+
+Quickly jump to a position in the current view.
+
+#+begin_src emacs-lisp
+  (use-package ace-jump-mode
+    :ensure t)
+  ;; I use the jj key-chord for this; see the definitions for key-chord
+#+end_src
+
+Ace Window looks useful too.
+
+#+begin_src emacs-lisp
+(use-package ace-window
+  :ensure t :defer t
+  :config (setq aw-keys '(?a ?o ?e ?u ?i ?d ?h ?t ?n ?s))
+  :bind ("C-x o" . ace-window))
+#+end_src
+
+And ace-isearch...
+
+#+begin_src emacs-lisp
+(use-package ace-isearch
+  :ensure t :defer t
+  :init (global-ace-isearch-mode 1))
+#+end_src
+
+And ace-jump-zap...
+
+#+begin_src emacs-lisp
+(use-package ace-jump-zap
+  :ensure t :defer t
+  :bind
+  (("M-z" . ace-jump-zap-up-to-char-dwim)
+   ("M-Z" . ace-jump-zap-to-char-dwim)))
+#+end_src

@@ -1,7 +1,13 @@
 *.FASL
 *.fasl
 *.lisp-temp
+*.last
+Eddy@EddyOSX*
+elpa
+auto-save-list
 *elc
 .DS_Store
 starter-kit-2.*
 *.tar
+*.zip
+*~
