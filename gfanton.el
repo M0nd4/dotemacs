@@ -1,52 +1,24 @@
-#+TITLE: Emacs configuration file
-#+AUTHOR: gfatnon
-#+BABEL: :cache yes
-#+LATEX_HEADER: \usepackage{parskip}
-#+LATEX_HEADER: \usepackage{inconsolata}
-#+PROPERTY: header-args :tangle yes :comments org
-#+OPTIONS: toc:4 h:4
 
-*** .emacs
-this lines should be add to =~/.emacs=
+;; Personal information
+;; initialize personal information
 
-#+BEGIN_SRC  emacs-lisp  :tangle no
-;; This sets up the load path so that we can override it
-(package-initialize nil)
-;; override what you want
-;; (add-to-list 'load-path "/usr/local/share/emacs/site-lisp")
-;; Load the rest of the packages
-(package-initialize nil)
-(setq package-enable-at-startup nil)
-(org-babel-load-file "~/.emacs.d/gfanton.org")
-#+END_SRC
+(setq user-full-name "Guilhem Fanton"
+user-mail-address "guilhem.fanton@gmail.com")
 
+;; Encodage
+;;    Set =utf-8= as preferred coding system.
 
-* Intialisation
-** Personal information
-initialize personal information
-#+BEGIN_SRC emacs-lisp
-   (setq user-full-name "Guilhem Fanton"
-   user-mail-address "guilhem.fanton@gmail.com")
-#+END_SRC
+(set-language-environment "UTF-8")
 
-** Encodage
-   Set =utf-8= as preferred coding system.
+;; Add package sources
 
-   #+BEGIN_SRC emacs-lisp
-     (set-language-environment "UTF-8")
-   #+END_SRC
-   
-** Emacs initialization
-*** Add package sources
-#+BEGIN_SRC emacs-lisp
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 (unless (assoc-default "melpa" package-archives)
   (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
   (package-refresh-contents))
-#+END_SRC
 
-*** init packages
-#+BEGIN_SRC emacs-lisp
+;; init packages
+
 (add-to-list 'load-path "~/elisp")
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
@@ -58,64 +30,49 @@ initialize personal information
   :ensure t
   :config (auto-compile-on-load-mode))
 (setq load-prefer-newer t)
-#+END_SRC
 
-** OS Configuration 
-*** MAC OSX
-#+BEGIN_SRC emacs-lisp
+;; MAC OSX
+
 (when (memq window-system '(mac ns))
   (setq mac-option-modifier nil
         mac-command-modifier 'meta
         x-select-enable-clipboard t)
   (exec-path-from-shell-initialize))
-#+END_SRC
 
-** load files
-*** private
-#+BEGIN_SRC emacs-lisp
+;; private
+
 (load "~/.emacs.private" t)
-#+END_SRC
 
-*** load custom el files
-#+BEGIN_SRC emacs-lisp
-;;(add-to-list 'load-path "~/elisp") 
-#+END_SRC
+;; load custom el files
 
-** Windows
-#+BEGIN_SRC emacs-lisp
+;;(add-to-list 'load-path "~/elisp")
+
+;; Windows
+
 (when window-system
   (tooltip-mode -1)
   (tool-bar-mode -1)
   (menu-bar-mode -1)
   (scroll-bar-mode -1))
-#+END_SRC
 
-   
-* Configuration
-** Visual
-*** Color Theme
+;; Color Theme
 
-Monokai Color Theme
+;; Monokai Color Theme
 
-#+BEGIN_SRC emacs-lisp
 (use-package color-theme
-	:ensure t
-	:init (use-package monokai-theme :ensure t)
-	:config (load-theme 'monokai t))
-#+END_SRC
+        :ensure t
+        :init (use-package monokai-theme :ensure t)
+        :config (load-theme 'monokai t))
 
-*** font
+;; font
 
-Use the Inconsolata font if it’s installed on the system.
+;; Use the Inconsolata font if it’s installed on the system.
 
-#+BEGIN_SRC emacs-lisp
 (when (member "Inconsolata" (font-family-list))
   (set-face-attribute 'default nil :font "Inconsolata-14"))
-#+END_SRC
 
-** Undo - Redo
-*** undo-tree
-#+BEGIN_SRC emacs-lisp
+;; undo-tree
+
 (use-package undo-tree
   :defer t
   :ensure t
@@ -125,21 +82,18 @@ Use the Inconsolata font if it’s installed on the system.
     (global-undo-tree-mode)
     (setq undo-tree-visualizer-timestamps t)
     (setq undo-tree-visualizer-diff t)))
-#+END_SRC
 
-*** winner-mode
-#+BEGIN_SRC emacs-lisp
+;; winner-mode
+
 (use-package winner
   :ensure t
   :defer t
   :config (winner-mode 1))
-#+END_SRC
 
-** Ido
+;; Ido
 
-install ido
+;; install ido
 
-#+BEGIN_SRC emacs-lisp
 (use-package ido
   :config
   (progn
@@ -161,22 +115,19 @@ install ido
      (delq nil (mapcar
                 (lambda (x) (if (string-equal (substring x 0 1) ".") x))
                 ido-temp-list))))))
-#+END_SRC
 
-ido ubiquitous
+;; ido ubiquitous
 
-#+BEGIN_SRC emacs-lisp
 (use-package ido-ubiquitous
-	:ensure t
-	:init
-	(setq org-completion-use-ido t)
-	(setq magit-completing-read-function 'magit-ido-completing-read)
-	:config
-	(ido-ubiquitous-mode 1))
-#+END_SRC
+        :ensure t
+        :init
+        (setq org-completion-use-ido t)
+        (setq magit-completing-read-function 'magit-ido-completing-read)
+        :config
+        (ido-ubiquitous-mode 1))
 
-** History
-#+BEGIN_SRC emacs-lisp
+;; History
+
 (setq savehist-file "~/.emacs.d/savehist")
 (savehist-mode 1)
 (setq history-length t)
@@ -186,20 +137,17 @@ ido ubiquitous
       '(kill-ring
         search-ring
         regexp-search-ring))
-#+END_SRC
 
-** Copy and Past
-#+BEGIN_SRC emacs-lisp
+;; Copy and Past
+
 (when (memq window-system '(mac ns))
-	(setq x-select-enable-clipboard t)
-	(setq interprogram-paste-function 'x-cut-buffer-or-selection-value))
-#+END_SRC
+        (setq x-select-enable-clipboard t)
+        (setq interprogram-paste-function 'x-cut-buffer-or-selection-value))
 
-** Whitespace
+;; Whitespace
 
-No whitespace at the end of the line
+;; No whitespace at the end of the line
 
-#+BEGIN_SRC emacs-lisp
 (defun del-end-whitespace ()
   "Deletes all blank lines at the end of the file, even the last one"
   (interactive)
@@ -211,24 +159,22 @@ No whitespace at the end of the line
       (let ((trailnewlines (abs (skip-chars-backward "\n\t"))))
       (if (> trailnewlines 1)
           (progn
-	        (delete-char trailnewlines)))))))
-#+END_SRC
-** auto-complete
-#+BEGIN_SRC emacs-lisp
+                (delete-char trailnewlines)))))))
+
+;; auto-complete
+
 (use-package company
   :ensure t 
   :config
   (add-hook 'prog-mode-hook 'company-mode))
-#+END_SRC 
 
-** tabbar
+;; tabbar
 
-tabbar mode
+;; tabbar mode
 
-#+BEGIN_SRC emacs-lisp
 (use-package tabbar
-	:ensure t
-	:config
+        :ensure t
+        :config
 
 (set-face-attribute
  'tabbar-default nil
@@ -281,5 +227,3 @@ That is, a string used to represent it on the tab bar."
                                 (tabbar-current-tabset)))))))))
 (tabbar-mode t)
 )
-#+END_SRC 
-
