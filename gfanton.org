@@ -62,11 +62,13 @@ initialize personal information
 
 ** OS Configuration
 *** MAC OSX
+
+ensure to get path from shell
+
 #+BEGIN_SRC emacs-lisp
 (when (memq window-system '(mac ns))
   (setq mac-option-modifier nil
-        mac-command-modifier 'meta
-        x-select-enable-clipboard t)
+        mac-command-modifier 'meta)
   (exec-path-from-shell-initialize))
 #+END_SRC
 
@@ -78,18 +80,24 @@ initialize personal information
 
 *** load custom el files
 #+BEGIN_SRC emacs-lisp
-;;(add-to-list 'load-path "~/elisp") 
+;;(add-to-list 'load-path "~/elisp")
 #+END_SRC
 
 ** Windows
+
+Im not on emacs to use the mouse
+:disable useless menu bar
+
 #+BEGIN_SRC emacs-lisp
 (when window-system
   (tooltip-mode -1)
   (tool-bar-mode -1)
-  (menu-bar-mode -1)
   (scroll-bar-mode -1))
+(menu-bar-mode -1)
 #+END_SRC
 
+
+* IN-PROGRESS Configuration
 ** Visual
 *** Color Theme
 
@@ -172,6 +180,37 @@ That is, a string used to represent it on the tab bar."
 )
 #+END_SRC
 
+*** NyanCat Progress
+
+nyan cat progress animation
+
+#+BEGIN_SRC emacs-lisp
+(use-package nyan-mode
+:ensure t
+:config
+(nyan-mode t)
+(nyan-start-animation))
+#+END_SRC
+*** Powerline
+#+BEGIN_SRC emacs-lisp
+(use-package powerline
+			 :ensure t
+			 :config
+			 (powerline-default-theme))
+#+END_SRC
+
+*** Hightlights
+**** volatile
+
+volatile-highlights
+
+#+BEGIN_SRC emacs-lisp
+(use-package volatile-highlights
+			 :ensure t
+			 :config
+			 (volatile-highlights-mode t))
+#+END_SRC
+
 ** Undo - Redo
 *** undo-tree
 #+BEGIN_SRC emacs-lisp
@@ -249,9 +288,8 @@ ido ubiquitous
 
 ** Copy and Past
 #+BEGIN_SRC emacs-lisp
-(when (memq window-system '(mac ns))
-	(setq x-select-enable-clipboard t)
-	(setq interprogram-paste-function 'x-cut-buffer-or-selection-value))
+(setq x-select-enable-clipboard t)
+(setq interprogram-paste-function 'x-cut-buffer-or-selection-value))
 #+END_SRC
 
 ** Whitespace
@@ -281,14 +319,21 @@ No whitespace at the end of the line
   (add-hook 'prog-mode-hook 'company-mode))
 #+END_SRC
 
-** Ace Jump
+** Snippets
 
-tabbar mode
- :box '(:line-width 1 :color "gray30" :style nil))
- :box '(:line-width 1 :color "gray75" :style nil))
- :box '(:line-width 1 :color "white" :style nil))
- '(tabbar-separator (quote (0.5))))
+load yas
+
+#+BEGIN_SRC emacs-lisp
+(use-package yasnippet
+			 :ensure t
+			 :init
+			 (setq yas-snippet-dirs "~/.emacs.d/snippets") ;; not really need - default yas folder
+			 :config
+			 (yas-global-mode 1))
+#+END_SRC
+
 
 * TODO MOD
+
 
 * TODO KEY
