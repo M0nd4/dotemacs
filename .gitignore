@@ -1,11 +1,7 @@
 # Ignore everything
 *
 
-# But not these files...
+# except:
 !.gitignore
 !gfanton.org
 !Readme.org
-# etc...
-
-# ...even if they are in subdirectories
-!*/
