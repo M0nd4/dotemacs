@@ -96,7 +96,6 @@ Im not on emacs to use the mouse
 (menu-bar-mode -1)
 #+END_SRC
 
-
 * IN-PROGRESS Configuration
 ** Visual
 *** Color Theme
@@ -121,63 +120,63 @@ Use the Inconsolata font if it’s installed on the system.
 
 *** tabbar
 
-stabbar mode
+tabbar mode
 
 #+BEGIN_SRC emacs-lisp
 (use-package tabbar
-	:ensure t
-	:config
-(set-face-attribute
- 'tabbar-default nil
- :background "gray20"
- :foreground "gray20"
- :box '(:line-width 1 :color "gray20" :style nil))
-(set-face-attribute
- 'tabbar-unselected nil
- :background "gray30"
- :foreground "white"
- :box '(:line-width 5 :color "gray30" :style nil))
-(set-face-attribute
- 'tabbar-selected nil
- :background "gray75"
- :foreground "#A41F99"
- :box '(:line-width 5 :color "gray75" :style nil))
-(set-face-attribute
- 'tabbar-highlight nil
- :background "white"
- :foreground "black"
- :underline nil
- :box '(:line-width 5 :color "white" :style nil))
-(set-face-attribute
- 'tabbar-button nil
- :box '(:line-width 1 :color "gray20" :style nil))
-(set-face-attribute
- 'tabbar-separator nil
- :background "grey20"
- :height 0.1)
+			 :ensure t
+			 :init
+			 (set-face-attribute
+			  'tabbar-default nil
+			  :background "gray20"
+			  :foreground "gray20"
+			  :box '(:line-width 1 :color "gray20" :style nil))
+			 (set-face-attribute
+			  'tabbar-unselected nil
+			  :background "gray30"
+			  :foreground "white"
+			  :box '(:line-width 5 :color "gray30" :style nil))
+			 (set-face-attribute
+			  'tabbar-selected nil
+			  :background "gray75"
+			  :foreground "#A41F99"
+			  :box '(:line-width 5 :color "gray75" :style nil))
+			 (set-face-attribute
+			  'tabbar-highlight nil
+			  :background "white"
+			  :foreground "black"
+			  :underline nil
+			  :box '(:line-width 5 :color "white" :style nil))
+			 (set-face-attribute
+			  'tabbar-button nil
+			  :box '(:line-width 1 :color "gray20" :style nil))
+			 (set-face-attribute
+			  'tabbar-separator nil
+			  :background "grey20"
+			  :height 0.1)
 
-;; Change padding of the tabs
-;; we also need to set separator to avoid overlapping tabs by highlighted tabs
-(custom-set-variables
- '(tabbar-separator (quote (1.0))))
-;; adding spaces
-(defun tabbar-buffer-tab-label (tab)
-  "Return a label for TAB.
+			 :config
+			 ;; Change padding of the tabs
+			 ;; we also need to set separator to avoid overlapping tabs by highlighted tabs
+			 (custom-set-variables
+			  '(tabbar-separator (quote (1.0))))
+			 ;; adding spaces
+			 (defun tabbar-buffer-tab-label (tab)
+			   "Return a label for TAB.
 That is, a string used to represent it on the tab bar."
-  (let ((label  (if tabbar--buffer-show-groups
-                    (format " [%s] " (tabbar-tab-tabset tab))
-                  (format " %s " (tabbar-tab-value tab)))))
-    ;; Unless the tab bar auto scrolls to keep the selected tab
-    ;; visible, shorten the tab label to keep as many tabs as possible
-    ;; in the visible area of the tab bar.
-    (if tabbar-auto-scroll-flag
-        label
-      (tabbar-shorten
-       label (max 1 (/ (window-width)
-                       (length (tabbar-view
-                                (tabbar-current-tabset)))))))))
-(tabbar-mode t)
-)
+			   (let ((label  (if tabbar--buffer-show-groups
+								 (format " [%s] " (tabbar-tab-tabset tab))
+							   (format " %s " (tabbar-tab-value tab)))))
+				 ;; Unless the tab bar auto scrolls to keep the selected tab
+				 ;; visible, shorten the tab label to keep as many tabs as possible
+				 ;; in the visible area of the tab bar.
+				 (if tabbar-auto-scroll-flag
+					 label
+				   (tabbar-shorten
+					label (max 1 (/ (window-width)
+									(length (tabbar-view
+											 (tabbar-current-tabset)))))))))
+			 (tabbar-mode t))
 #+END_SRC
 
 *** NyanCat Progress
@@ -332,8 +331,14 @@ load yas
 			 (yas-global-mode 1))
 #+END_SRC
 
+* TODO Mode
 
-* TODO MOD
+* IN-PROGRESS Key
+** Navigation
 
+Jump between parenthesis
 
-* TODO KEY
+#+BEGIN_SRC emacs_lisp
+(global-set-key (kbd "C-x <down>") 'forward-sexp)
+(global-set-key (kbd "C-x <up>") 'backward-sexp)
+#+END_SRC
