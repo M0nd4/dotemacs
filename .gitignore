@@ -1,15 +1,11 @@
-*.FASL
-*.fasl
-*.lisp-temp
-*.last
-*@*
-elpa
-auto-save-list
-*elc
-.DS_Store
-starter-kit-2.*
-savehist
-gfanton.el
-*.tar
-*.zip
-*~
+# Ignore everything
+*
+
+# But not these files...
+!.gitignore
+!gfanton.org
+!Readme.org
+# etc...
+
+# ...even if they are in subdirectories
+!*/
