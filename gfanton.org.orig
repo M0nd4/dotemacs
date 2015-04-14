@@ -60,7 +60,11 @@ initialize personal information
 (setq load-prefer-newer t)
 #+END_SRC
 
+<<<<<<< HEAD
 ** OS Configuration
+=======
+** OS Configuration 
+>>>>>>> fcb52e8ec28df387e5d827e76de8542381715afc
 *** MAC OSX
 #+BEGIN_SRC emacs-lisp
 (when (memq window-system '(mac ns))
@@ -78,7 +82,11 @@ initialize personal information
 
 *** load custom el files
 #+BEGIN_SRC emacs-lisp
+<<<<<<< HEAD
+(add-to-list 'load-path "~/elisp")
+=======
 ;;(add-to-list 'load-path "~/elisp") 
+>>>>>>> fcb52e8ec28df387e5d827e76de8542381715afc
 #+END_SRC
 
 ** Windows
@@ -90,6 +98,12 @@ initialize personal information
   (scroll-bar-mode -1))
 #+END_SRC
 
+<<<<<<< HEAD
+* IN-PROGRESS Configuration
+=======
+   
+* Configuration
+>>>>>>> fcb52e8ec28df387e5d827e76de8542381715afc
 ** Visual
 *** Color Theme
 
@@ -279,16 +293,112 @@ No whitespace at the end of the line
   :ensure t
   :config
   (add-hook 'prog-mode-hook 'company-mode))
+<<<<<<< HEAD
 #+END_SRC
 
 ** Ace Jump
 
-tabbar mode
- :box '(:line-width 1 :color "gray30" :style nil))
- :box '(:line-width 1 :color "gray75" :style nil))
- :box '(:line-width 1 :color "white" :style nil))
- '(tabbar-separator (quote (0.5))))
+Quickly jump to a position in the current view.
+
+#+begin_src emacs-lisp
+  (use-package ace-jump-mode
+    :ensure t)
+  ;; I use the jj key-chord for this; see the definitions for key-chord
+#+end_src
+
+Ace Window looks useful too.
+
+#+begin_src emacs-lisp
+(use-package ace-window
+  :ensure t :defer t
+  :config (setq aw-keys '(?a ?o ?e ?u ?i ?d ?h ?t ?n ?s))
+  :bind ("C-x o" . ace-window))
+#+end_src
+
+And ace-isearch...
+
+#+begin_src emacs-lisp
+(use-package ace-isearch
+  :ensure t :defer t
+  :init (global-ace-isearch-mode 1))
+#+end_src
+
+And ace-jump-zap...
+
+#+begin_src emacs-lisp
+(use-package ace-jump-zap
+  :ensure t :defer t
+  :bind
+  (("M-z" . ace-jump-zap-up-to-char-dwim)
+   ("M-Z" . ace-jump-zap-to-char-dwim)))
+#+end_src
 
 * TODO MOD
 
 * TODO KEY
+=======
+#+END_SRC 
+
+** tabbar
+
+tabbar mode
+
+#+BEGIN_SRC emacs-lisp
+(use-package tabbar
+	:ensure t
+	:config
+
+(set-face-attribute
+ 'tabbar-default nil
+ :background "gray20"
+ :foreground "gray20"
+ :box '(:line-width 1 :color "gray20" :style nil))
+(set-face-attribute
+ 'tabbar-unselected nil
+ :background "gray30"
+ :foreground "white"
+ :box '(:line-width 1 :color "gray30" :style nil))
+(set-face-attribute
+ 'tabbar-selected nil
+ :background "gray75"
+ :foreground "#A41F99"
+ :box '(:line-width 1 :color "gray75" :style nil))
+(set-face-attribute
+ 'tabbar-highlight nil
+ :background "white"
+ :foreground "black"
+ :underline nil
+ :box '(:line-width 1 :color "white" :style nil))
+(set-face-attribute
+ 'tabbar-button nil
+ :box '(:line-width 1 :color "gray20" :style nil))
+(set-face-attribute
+ 'tabbar-separator nil
+ :background "grey20"
+ :height 0.1)
+
+;; Change padding of the tabs
+;; we also need to set separator to avoid overlapping tabs by highlighted tabs
+(custom-set-variables
+ '(tabbar-separator (quote (0.5))))
+;; adding spaces
+(defun tabbar-buffer-tab-label (tab)
+  "Return a label for TAB.
+That is, a string used to represent it on the tab bar."
+  (let ((label  (if tabbar--buffer-show-groups
+                    (format " [%s] " (tabbar-tab-tabset tab))
+                  (format " %s " (tabbar-tab-value tab)))))
+    ;; Unless the tab bar auto scrolls to keep the selected tab
+    ;; visible, shorten the tab label to keep as many tabs as possible
+    ;; in the visible area of the tab bar.
+    (if tabbar-auto-scroll-flag
+        label
+      (tabbar-shorten
+       label (max 1 (/ (window-width)
+                       (length (tabbar-view
+                                (tabbar-current-tabset)))))))))
+(tabbar-mode t)
+)
+#+END_SRC 
+
+>>>>>>> fcb52e8ec28df387e5d827e76de8542381715afc
