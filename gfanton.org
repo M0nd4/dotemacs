@@ -112,12 +112,12 @@ ensure to get path from shell
 #+BEGIN_SRC emacs-lisp
 (load "~/.emacs.private" t)
 #+END_SRC
-    
+
 *** load custom el files
 #+BEGIN_SRC emacs-lisp
 ;;(add-to-list 'load-path "~/elisp")
 #+END_SRC
-   
+
 ** Windows
 
 Im not on emacs to use the mouse
@@ -131,7 +131,7 @@ Im not on emacs to use the mouse
 (menu-bar-mode -1)
 #+END_SRC
 
-* TODO Global Configuration
+* IN-PROGRESS Global Configuration
 ** Visual
 *** Color Theme
 
@@ -159,7 +159,7 @@ tabbar mode
 
 #+BEGIN_SRC emacs-lisp
 (use-package tabbar
-			 :ensure t			
+			 :ensure t
 			 :config
 			 (set-face-attribute
 			  'tabbar-default nil
@@ -382,6 +382,16 @@ load yas
 			 (yas-global-mode 1))
 #+END_SRC
 
+** PCRE
+
+I prefere to use PCRE instead of emacs regex engine
+
+#+BEGIN_SRC emcas_lisp
+(use-package pcre2lisp
+			 :ensure t
+			 :config
+			 (pcre-mode))
+#+END_SRC
 
 * TODO Mode
 
