@@ -4,7 +4,6 @@
 #+LATEX_HEADER: \usepackage{parskip}
 #+LATEX_HEADER: \usepackage{inconsolata}
 #+PROPERTY: header-args :tangle yes :comments org
-#+OPTIONS: toc:4 h:4
 
 *** .emacs
 this lines should be add to =~/.emacs=
@@ -61,15 +60,51 @@ initialize personal information
 #+END_SRC
 
 ** OS Configuration
-*** MAC OSX
 
+Easy system check macro
+
+#+BEGIN_SRC emacs-lisp
+(defmacro with-system (type &rest body)
+  "Evaluate body if `system-type' equals type."
+  `(when (eq system-type ,type)
+     ,@body))
+#+END_SRC
+
+*** path
+****  MAC OSX
 ensure to get path from shell
 
 #+BEGIN_SRC emacs-lisp
-(when (memq window-system '(mac ns))
-  (setq mac-option-modifier nil
-        mac-command-modifier 'meta)
-  (exec-path-from-shell-initialize))
+ (with-system 'mac ns
+  	(exec-path-from-shell-initialize)
+	(setq mac-option-modifier nil
+        mac-command-modifier 'meta))
+#+END_SRC
+
+*** Copy and Past
+**** MAC OSX
+#+BEGIN_SRC emacs-lisp
+(with-system 'mac ns
+(defun copy-from-osx ()
+"Copy from osx."
+  (shell-command-to-string "pbpaste"))
+
+(defun paste-to-osx (text &optional push)
+"Past to osx."
+  (let ((process-connection-type nil))
+    (let ((proc (start-process "pbcopy" "*Messages*" "pbcopy")))
+      (process-send-string proc text)
+      (process-send-eof proc))))
+
+(setq interprogram-cut-function 'paste-to-osx)
+(setq interprogram-paste-function 'copy-from-osx))
+#+END_SRC
+
+**** Linux
+#+BEGIN_SRC emacs-lisp
+(with-system 'gnu/linux
+(setq x-select-enable-clipboard t)
+(setq interprogram-paste-function 'x-cut-buffer-or-selection-value))
 #+END_SRC
 
 ** load files
@@ -77,12 +112,12 @@ ensure to get path from shell
 #+BEGIN_SRC emacs-lisp
 (load "~/.emacs.private" t)
 #+END_SRC
-
+    
 *** load custom el files
 #+BEGIN_SRC emacs-lisp
 ;;(add-to-list 'load-path "~/elisp")
 #+END_SRC
-
+   
 ** Windows
 
 Im not on emacs to use the mouse
@@ -96,7 +131,7 @@ Im not on emacs to use the mouse
 (menu-bar-mode -1)
 #+END_SRC
 
-* IN-PROGRESS Configuration
+* TODO Global Configuration
 ** Visual
 *** Color Theme
 
@@ -124,8 +159,8 @@ tabbar mode
 
 #+BEGIN_SRC emacs-lisp
 (use-package tabbar
-			 :ensure t
-			 :init
+			 :ensure t			
+			 :config
 			 (set-face-attribute
 			  'tabbar-default nil
 			  :background "gray20"
@@ -155,7 +190,7 @@ tabbar mode
 			  :background "grey20"
 			  :height 0.1)
 
-			 :config
+
 			 ;; Change padding of the tabs
 			 ;; we also need to set separator to avoid overlapping tabs by highlighted tabs
 			 (custom-set-variables
@@ -184,7 +219,7 @@ That is, a string used to represent it on the tab bar."
 nyan cat progress animation
 
 #+BEGIN_SRC emacs-lisp
-(use-package nyan-mode
+(use-package nyan-mode :disabled t
 :ensure t
 :config
 (nyan-mode t)
@@ -208,6 +243,28 @@ volatile-highlights
 			 :ensure t
 			 :config
 			 (volatile-highlights-mode t))
+#+END_SRC
+
+**** hl
+
+#+BEGIN_SRC emacs-lisp
+(use-package hl-line+
+  :ensure t
+  :config
+  (require hl-line+)
+  (toggle-hl-line-when-idle 1))
+#+END_SRC
+
+** functions
+
+execve
+
+#+BEGIN_SRC emacs-lisp
+(defun execvp (&rest args)
+  "Simulate C's execvp() function.
+Quote each argument seperately, join with spaces and call shell-command-to-string to run in a shell."
+  (let ((cmd (mapconcat 'shell-quote-argument args " ")))
+    (shell-command-to-string cmd)))
 #+END_SRC
 
 ** Undo - Redo
@@ -285,12 +342,6 @@ ido ubiquitous
         regexp-search-ring))
 #+END_SRC
 
-** Copy and Past
-#+BEGIN_SRC emacs-lisp
-(setq x-select-enable-clipboard t)
-(setq interprogram-paste-function 'x-cut-buffer-or-selection-value))
-#+END_SRC
-
 ** Whitespace
 
 No whitespace at the end of the line
@@ -311,6 +362,7 @@ No whitespace at the end of the line
 #+END_SRC
 
 ** auto-complete
+
 #+BEGIN_SRC emacs-lisp
 (use-package company
   :ensure t
@@ -327,9 +379,9 @@ load yas
 			 :ensure t
 			 :init
 			 (setq yas-snippet-dirs "~/.emacs.d/snippets") ;; not really need - default yas folder
-			 :config
 			 (yas-global-mode 1))
 #+END_SRC
+
 
 * TODO Mode
 
