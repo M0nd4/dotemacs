@@ -40,8 +40,7 @@ initialize personal information
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 (unless (assoc-default "melpa" package-archives)
-  (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
-  (package-refresh-contents))
+  (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t))
 #+END_SRC
 
 *** init packages
@@ -245,15 +244,6 @@ volatile-highlights
 			 (volatile-highlights-mode t))
 #+END_SRC
 
-**** hl
-
-#+BEGIN_SRC emacs-lisp
-(use-package hl-line+
-  :ensure t
-  :config
-  (require hl-line+)
-  (toggle-hl-line-when-idle 1))
-#+END_SRC
 
 ** functions
 
@@ -392,6 +382,7 @@ I prefere to use PCRE instead of emacs regex engine
 			 :config
 			 (pcre-mode))
 #+END_SRC
+
 
 * TODO Mode
 
