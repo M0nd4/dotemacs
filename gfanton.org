@@ -21,13 +21,6 @@ this lines should be add to =~/.emacs=
 
 
 * Intialisation
-** Personal information
-initialize personal information
-#+BEGIN_SRC emacs-lisp
-   (setq user-full-name "Guilhem Fanton"
-   user-mail-address "guilhem.fanton@gmail.com")
-#+END_SRC
-
 ** Encodage
    Set =utf-8= as preferred coding system.
 
