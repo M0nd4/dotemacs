@@ -34,6 +34,9 @@ this lines should be add to =~/.emacs=
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 (unless (assoc-default "melpa" package-archives)
   (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t))
+(unless (file-exists-p "~/.emacs.d/elpa") 
+(package-refresh-contents) nil)
+
 #+END_SRC
 
 *** init packages
@@ -52,7 +55,7 @@ this lines should be add to =~/.emacs=
 #+END_SRC
 
 ** OS Configuration
-
+   
 Easy system check macro
 
 #+BEGIN_SRC emacs-lisp
@@ -67,7 +70,7 @@ Easy system check macro
 ensure to get path from shell
 
 #+BEGIN_SRC emacs-lisp
- (with-system 'mac ns
+ (with-system 'mac-ns
   	(exec-path-from-shell-initialize)
 	(setq mac-option-modifier nil
         mac-command-modifier 'meta))
@@ -76,7 +79,7 @@ ensure to get path from shell
 *** Copy and Past
 **** MAC OSX
 #+BEGIN_SRC emacs-lisp
-(with-system 'mac ns
+(with-system 'mac-ns
 (defun copy-from-osx ()
 "Copy from osx."
   (shell-command-to-string "pbpaste"))
@@ -100,7 +103,7 @@ ensure to get path from shell
 #+END_SRC
 
 ** load files
-*** private
+*** TODO private
 #+BEGIN_SRC emacs-lisp
 (load "~/.emacs.private" t)
 #+END_SRC
@@ -111,19 +114,19 @@ ensure to get path from shell
 #+END_SRC
 
 ** Windows
-
-Im not on emacs to use the mouse
-:disable useless menu bar
-
-#+BEGIN_SRC emacs-lisp
+   
+   Im not on emacs to use the mouse
+   :disable useless menu bar
+   
+   #+BEGIN_SRC emacs-lisp
 (when window-system
   (tooltip-mode -1)
   (tool-bar-mode -1)
   (scroll-bar-mode -1))
 (menu-bar-mode -1)
-#+END_SRC
-
-* IN-PROGRESS Global Configuration
+   #+END_SRC
+   
+* Global Configuration
 ** Visual
 *** Color Theme
 
@@ -237,19 +240,18 @@ volatile-highlights
 			 (volatile-highlights-mode t))
 #+END_SRC
 
-
 ** functions
-
-execve
-
-#+BEGIN_SRC emacs-lisp
+   
+   execve
+   
+   #+BEGIN_SRC emacs-lisp
 (defun execvp (&rest args)
   "Simulate C's execvp() function.
 Quote each argument seperately, join with spaces and call shell-command-to-string to run in a shell."
   (let ((cmd (mapconcat 'shell-quote-argument args " ")))
     (shell-command-to-string cmd)))
-#+END_SRC
-
+   #+END_SRC
+   
 ** Undo - Redo
 *** undo-tree
 #+BEGIN_SRC emacs-lisp
@@ -273,36 +275,22 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
 #+END_SRC
 
 ** Ido
-
-install ido
-
-#+BEGIN_SRC emacs-lisp
+   
+   install ido
+   
+   #+BEGIN_SRC emacs-lisp
 (use-package ido
   :config
   (progn
   (ido-mode 1)
   (ido-everywhere 1)
-  (setq ido-default-buffer-method 'selected-window)
-  (add-hook 'ido-make-file-list-hook 'ido-sort-mtime)
-  (add-hook 'ido-make-dir-list-hook 'ido-sort-mtime)
-  (defun ido-sort-mtime ()
-    (setq ido-temp-list
-          (sort ido-temp-list
-                (lambda (a b)
-                  (let ((ta (nth 5 (file-attributes (concat ido-current-directory a))))
-                        (tb (nth 5 (file-attributes (concat ido-current-directory b)))))
-                    (if (= (nth 0 ta) (nth 0 tb))
-                        (> (nth 1 ta) (nth 1 tb))
-                      (> (nth 0 ta) (nth 0 tb)))))))
-    (ido-to-end  ;; move . files to end (again)
-     (delq nil (mapcar
-                (lambda (x) (if (string-equal (substring x 0 1) ".") x))
-                ido-temp-list))))))
-#+END_SRC
+  (setq ido-default-buffer-method 'selected-window)))
 
-ido ubiquitous
-
-#+BEGIN_SRC emacs-lisp
+   #+END_SRC
+   
+   ido ubiquitous
+   
+   #+BEGIN_SRC emacs-lisp
 (use-package ido-ubiquitous
 	:ensure t
 	:init
@@ -310,8 +298,19 @@ ido ubiquitous
 	(setq magit-completing-read-function 'magit-ido-completing-read)
 	:config
 	(ido-ubiquitous-mode 1))
-#+END_SRC
+   #+END_SRC
+   
+** helm
+*** helm
+    
+    incremental and narrowing framework
+    
+    #+BEGIN_SRC 
 
+    #+END_SRC
+    
+*** helm- 
+    
 ** History
 #+BEGIN_SRC emacs-lisp
 (setq savehist-file "~/.emacs.d/savehist")
@@ -377,14 +376,50 @@ I prefere to use PCRE instead of emacs regex engine
 #+END_SRC
 
 
-* TODO Mode
+* Coding 
+** PHP-mode
+#+BEGIN_SRC emacs-list
+(use-package php-mode :ensure t :defer t)
+#+END_SRC
 
-* IN-PROGRESS Key
+   
+* Key
 ** Navigation
-
-Jump between parenthesis
-
-#+BEGIN_SRC emacs_lisp
+   
+   Jump between parenthesis
+   
+   #+BEGIN_SRC emacs_lisp
 (global-set-key (kbd "C-x <down>") 'forward-sexp)
 (global-set-key (kbd "C-x <up>") 'backward-sexp)
-#+END_SRC
+   #+END_SRC
+   
+** override
+   
+   commande
+   #+BEGIN_SRC emacs_lisp
+(global-set-key (kbd "C-x x") 'hlm)
+   #+END_SRC
+   
+   #+BEGIN_SRC emacs_lisp
+(global-set-key (kbd "C-x <down>") 'forward-sexp)
+(global-set-key (kbd "C-x <up>") 'backward-sexp)
+   #+END_SRC
+   
+** New line
+
+   always indent on new line
+
+   #+BEGIN_SRC emacs-lisp
+   (global-set-key (kbd "RET") 'newline-and-indent)
+   #+END_SRC
+   
+   #+BEGIN_SRC emacs-lisp
+(defun sanityinc/kill-back-to-indentation ()
+  "Kill from point back to the first non-whitespace character on the line."
+  (interactive)
+  (let ((prev-pos (point)))
+    (back-to-indentation)
+    (kill-region (point) prev-pos)))
+
+(bind-key "C-M-<backspace>" 'sanityinc/kill-back-to-indentation)
+   #+END_SRC
