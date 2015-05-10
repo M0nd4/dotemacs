@@ -23,24 +23,24 @@ this lines should be add to =~/.emacs=
 * Intialisation
 ** Encodage
    Set =utf-8= as preferred coding system.
-
+   
    #+BEGIN_SRC emacs-lisp
      (set-language-environment "UTF-8")
    #+END_SRC
-
+   
 ** Emacs initialization
 *** Add package sources
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 (unless (assoc-default "melpa" package-archives)
   (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t))
 (unless (file-exists-p "~/.emacs.d/elpa") 
 (package-refresh-contents) nil)
 
-#+END_SRC
-
+    #+END_SRC
+    
 *** init packages
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 (add-to-list 'load-path "~/elisp")
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
@@ -52,33 +52,33 @@ this lines should be add to =~/.emacs=
   :ensure t
   :config (auto-compile-on-load-mode))
 (setq load-prefer-newer t)
-#+END_SRC
-
+    #+END_SRC
+    
 ** OS Configuration
    
-Easy system check macro
-
-#+BEGIN_SRC emacs-lisp
+   Easy system check macro
+   
+   #+BEGIN_SRC emacs-lisp
 (defmacro with-system (type &rest body)
   "Evaluate body if `system-type' equals type."
   `(when (eq system-type ,type)
      ,@body))
-#+END_SRC
-
+   #+END_SRC
+   
 *** path
 ****  MAC OSX
-ensure to get path from shell
-
-#+BEGIN_SRC emacs-lisp
+      ensure to get path from shell
+      
+      #+BEGIN_SRC emacs-lisp
  (with-system 'mac-ns
   	(exec-path-from-shell-initialize)
 	(setq mac-option-modifier nil
         mac-command-modifier 'meta))
-#+END_SRC
-
+      #+END_SRC
+      
 *** Copy and Past
 **** MAC OSX
-#+BEGIN_SRC emacs-lisp
+     #+BEGIN_SRC emacs-lisp
 (with-system 'mac-ns
 (defun copy-from-osx ()
 "Copy from osx."
@@ -93,26 +93,26 @@ ensure to get path from shell
 
 (setq interprogram-cut-function 'paste-to-osx)
 (setq interprogram-paste-function 'copy-from-osx))
-#+END_SRC
-
+     #+END_SRC
+     
 **** Linux
-#+BEGIN_SRC emacs-lisp
+     #+BEGIN_SRC emacs-lisp
 (with-system 'gnu/linux
 (setq x-select-enable-clipboard t)
 (setq interprogram-paste-function 'x-cut-buffer-or-selection-value))
-#+END_SRC
-
+     #+END_SRC
+     
 ** load files
 *** TODO private
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 (load "~/.emacs.private" t)
-#+END_SRC
-
+    #+END_SRC
+    
 *** load custom el files
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 ;;(add-to-list 'load-path "~/elisp")
-#+END_SRC
-
+    #+END_SRC
+    
 ** Windows
    
    Im not on emacs to use the mouse
@@ -126,33 +126,34 @@ ensure to get path from shell
 (menu-bar-mode -1)
    #+END_SRC
    
+   
 * Global Configuration
 ** Visual
 *** Color Theme
-
-Monokai Color Theme
-
-#+BEGIN_SRC emacs-lisp
+    
+    Monokai Color Theme
+    
+    #+BEGIN_SRC emacs-lisp
 (use-package color-theme
 	:ensure t
 	:init (use-package monokai-theme :ensure t)
 	:config (load-theme 'monokai t))
-#+END_SRC
-
+    #+END_SRC
+    
 *** font
-
-Use the Inconsolata font if it’s installed on the system.
-
-#+BEGIN_SRC emacs-lisp
+    
+    Use the Inconsolata font if it’s installed on the system.
+    
+    #+BEGIN_SRC emacs-lisp
 (when (member "Inconsolata" (font-family-list))
   (set-face-attribute 'default nil :font "Inconsolata-14"))
-#+END_SRC
-
+    #+END_SRC
+    
 *** tabbar
-
-tabbar mode
-
-#+BEGIN_SRC emacs-lisp
+    
+    tabbar mode (monokai style)
+    
+    #+BEGIN_SRC emacs-lisp
 (use-package tabbar
 			 :ensure t
 			 :config
@@ -207,39 +208,44 @@ That is, a string used to represent it on the tab bar."
 									(length (tabbar-view
 											 (tabbar-current-tabset)))))))))
 			 (tabbar-mode t))
-#+END_SRC
-
+    #+END_SRC
+    
 *** NyanCat Progress
-
-nyan cat progress animation
-
-#+BEGIN_SRC emacs-lisp
+    
+    nyan cat progress animation
+    
+    #+BEGIN_SRC emacs-lisp
 (use-package nyan-mode :disabled t
 :ensure t
 :config
 (nyan-mode t)
 (nyan-start-animation))
-#+END_SRC
+    #+END_SRC
 *** Powerline
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 (use-package powerline
 			 :ensure t
 			 :config
 			 (powerline-default-theme))
-#+END_SRC
-
+    #+END_SRC
+    
 *** Hightlights
 **** volatile
-
-volatile-highlights
-
-#+BEGIN_SRC emacs-lisp
+     
+     volatile-highlights
+     
+     #+BEGIN_SRC emacs-lisp
 (use-package volatile-highlights
 			 :ensure t
 			 :config
 			 (volatile-highlights-mode t))
-#+END_SRC
-
+     #+END_SRC
+     
+*** org-babel
+    
+    color source block
+    
+        
 ** functions
    
    execve
@@ -254,7 +260,7 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
    
 ** Undo - Redo
 *** undo-tree
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 (use-package undo-tree
   :defer t
   :ensure t
@@ -264,16 +270,16 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
     (global-undo-tree-mode)
     (setq undo-tree-visualizer-timestamps t)
     (setq undo-tree-visualizer-diff t)))
-#+END_SRC
-
+    #+END_SRC
+    
 *** winner-mode
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 (use-package winner
   :ensure t
   :defer t
   :config (winner-mode 1))
-#+END_SRC
-
+    #+END_SRC
+    
 ** Ido
    
    install ido
@@ -305,14 +311,18 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
     
     incremental and narrowing framework
     
-    #+BEGIN_SRC 
-
+    #+BEGIN_SRC emacs-lisp
+(use-package helm
+  :ensure t
+  :config
+  (helm-mode))
     #+END_SRC
     
-*** helm- 
-    
 ** History
-#+BEGIN_SRC emacs-lisp
+   
+   save history
+   
+   #+BEGIN_SRC emacs-lisp
 (setq savehist-file "~/.emacs.d/savehist")
 (savehist-mode 1)
 (setq history-length t)
@@ -322,13 +332,13 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
       '(kill-ring
         search-ring
         regexp-search-ring))
-#+END_SRC
-
+   #+END_SRC
+   
 ** Whitespace
-
-No whitespace at the end of the line
-
-#+BEGIN_SRC emacs-lisp
+   
+   No whitespace at the end of the line
+   
+   #+BEGIN_SRC emacs-lisp
 (defun del-end-whitespace ()
   "Deletes all blank lines at the end of the file, even the last one"
   (interactive)
@@ -341,48 +351,57 @@ No whitespace at the end of the line
       (if (> trailnewlines 1)
           (progn
 	        (delete-char trailnewlines)))))))
-#+END_SRC
-
+   #+END_SRC
+   
 ** auto-complete
-
-#+BEGIN_SRC emacs-lisp
+   
+   #+BEGIN_SRC emacs-lisp
 (use-package company
   :ensure t
   :config
   (add-hook 'prog-mode-hook 'company-mode))
-#+END_SRC
-
+   #+END_SRC
+   
 ** Snippets
-
-load yas
-
-#+BEGIN_SRC emacs-lisp
+   
+   load yas
+   
+   #+BEGIN_SRC emacs-lisp
 (use-package yasnippet
 			 :ensure t
 			 :init
 			 (setq yas-snippet-dirs "~/.emacs.d/snippets") ;; not really need - default yas folder
 			 (yas-global-mode 1))
-#+END_SRC
-
+   #+END_SRC
+   
 ** PCRE
-
-I prefere to use PCRE instead of emacs regex engine
-
-#+BEGIN_SRC emcas_lisp
+   
+   I prefere to use PCRE instead of emacs regex engine
+   
+   #+BEGIN_SRC emcas_lisp
 (use-package pcre2lisp
 			 :ensure t
 			 :config
 			 (pcre-mode))
-#+END_SRC
-
-
+   #+END_SRC
+   
+   
 * Coding 
 ** PHP-mode
-#+BEGIN_SRC emacs-list
+   #+BEGIN_SRC emacs-list
 (use-package php-mode :ensure t :defer t)
-#+END_SRC
-
+   #+END_SRC
    
+   
+* Org
+** Souce Block 
+*** Fontifaction
+    
+    #+BEGIN_SRC emacs-lisp
+(setq org-src-fontify-natively t)
+    #+END_SRC
+    
+    
 * Key
 ** Navigation
    
@@ -406,9 +425,9 @@ I prefere to use PCRE instead of emacs regex engine
    #+END_SRC
    
 ** New line
-
+   
    always indent on new line
-
+   
    #+BEGIN_SRC emacs-lisp
    (global-set-key (kbd "RET") 'newline-and-indent)
    #+END_SRC
