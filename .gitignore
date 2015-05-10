@@ -4,5 +4,6 @@
 # except:
 !.gitignore
 !gfanton.org
+!snippets
 !Readme.org
 !install/*
