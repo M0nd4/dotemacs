@@ -6,118 +6,114 @@
 #+PROPERTY: header-args :tangle yes :comments org
 
 *** .emacs
-this lines should be add to =~/.emacs=
 
-#+BEGIN_SRC  emacs-lisp  :tangle no
-;; This sets up the load path so that we can override it
-(package-initialize nil)
-;; override what you want
-;; (add-to-list 'load-path "/usr/local/share/emacs/site-lisp")
-;; Load the rest of the packages
-(package-initialize nil)
-(setq package-enable-at-startup nil)
-(org-babel-load-file "~/.emacs.d/gfanton.org")
-#+END_SRC
+    this lines should be add to =~/.emacs=
+
+    #+BEGIN_SRC emacs-lisp :tangle no
+      (require 'org)
+      (package-initialize)
+      (setq package-enable-at-startup nil)
+      (org-babel-load-file "~/.emacs.d/gfanton.org")
+    #+END_SRC
 
 
 * Intialisation
 ** Encodage
    Set =utf-8= as preferred coding system.
-   
+
    #+BEGIN_SRC emacs-lisp
      (set-language-environment "UTF-8")
    #+END_SRC
-   
+
 ** Emacs initialization
-*** Add package sources
-    #+BEGIN_SRC emacs-lisp
-(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
-(unless (assoc-default "melpa" package-archives)
-  (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t))
-(unless (file-exists-p "~/.emacs.d/elpa") 
-(package-refresh-contents) nil)
+*** add package sources
 
+    add repo
+
+    #+BEGIN_SRC emacs-lisp
+      (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+      (unless (assoc-default "melpa" package-archives)
+        (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t))
     #+END_SRC
-    
+
+    refresh on first init
+
+    #+BEGIN_SRC emacs-lisp
+      (unless (file-exists-p "~/.emacs.d/elpa")
+        (package-refresh-contents) nil)
+    #+END_SRC
+
 *** init packages
+
     #+BEGIN_SRC emacs-lisp
-(add-to-list 'load-path "~/elisp")
-(unless (package-installed-p 'use-package)
-  (package-install 'use-package))
-(setq use-package-verbose t)
-(require 'use-package)
-(use-package dash
-  :ensure t)
-(use-package auto-compile
-  :ensure t
-  :config (auto-compile-on-load-mode))
-(setq load-prefer-newer t)
+      (add-to-list 'load-path "~/elisp")
+      (unless (package-installed-p 'use-package)
+        (package-install 'use-package))
+      (setq use-package-verbose t)
+      (require 'use-package)
+      (use-package dash
+        :ensure t)
+      (use-package auto-compile
+        :ensure t
+        :config (auto-compile-on-load-mode))
+      (setq load-prefer-newer t)
     #+END_SRC
-    
+
 ** OS Configuration
-   
+
    Easy system check macro
-   
+
    #+BEGIN_SRC emacs-lisp
-(defmacro with-system (type &rest body)
-  "Evaluate body if `system-type' equals type."
-  `(when (eq system-type ,type)
-     ,@body))
+     (defmacro with-system (type &rest body)
+       "Evaluate body if `system-type' equals type."
+       `(when (eq system-type ,type)
+          ,@body))
    #+END_SRC
-   
+
 *** path
-****  MAC OSX
-      ensure to get path from shell
-      
-      #+BEGIN_SRC emacs-lisp
- (with-system 'mac-ns
-  	(exec-path-from-shell-initialize)
-	(setq mac-option-modifier nil
-        mac-command-modifier 'meta))
-      #+END_SRC
-      
-*** Copy and Past
+*** copy and past
 **** MAC OSX
-     #+BEGIN_SRC emacs-lisp
-(with-system 'mac-ns
-(defun copy-from-osx ()
-"Copy from osx."
-  (shell-command-to-string "pbpaste"))
 
-(defun paste-to-osx (text &optional push)
-"Past to osx."
-  (let ((process-connection-type nil))
-    (let ((proc (start-process "pbcopy" "*Messages*" "pbcopy")))
-      (process-send-string proc text)
-      (process-send-eof proc))))
-
-(setq interprogram-cut-function 'paste-to-osx)
-(setq interprogram-paste-function 'copy-from-osx))
-     #+END_SRC
-     
-**** Linux
      #+BEGIN_SRC emacs-lisp
-(with-system 'gnu/linux
-(setq x-select-enable-clipboard t)
-(setq interprogram-paste-function 'x-cut-buffer-or-selection-value))
+       (defun copy-from-osx ()
+         "Copy from osx."
+         (shell-command-to-string "pbpaste"))
+
+       (defun paste-to-osx (text &optional push)
+         "Past to osx."
+         (let ((process-connection-type nil))
+           (let ((proc (start-process "pbcopy" "*Messages*" "pbcopy")))
+             (process-send-string proc text)
+             (process-send-eof proc))))
+
+       (with-system 'darwin
+                    (setq interprogram-cut-function 'paste-to-osx)
+                    (setq interprogram-paste-function 'copy-from-osx))
      #+END_SRC
-     
+
+**** linux
+     #+BEGIN_SRC emacs-lisp
+       (with-system 'gnu/linux
+       (setq x-select-enable-clipboard t)
+       (setq interprogram-paste-function 'x-cut-buffer-or-selection-value))
+     #+END_SRC
+
 ** load files
-*** TODO private
+*** private
     #+BEGIN_SRC emacs-lisp
 (load "~/.emacs.private" t)
     #+END_SRC
-    
+
 *** load custom el files
     #+BEGIN_SRC emacs-lisp
 ;;(add-to-list 'load-path "~/elisp")
     #+END_SRC
-    
+
 ** Windows
-   
+
    Im not on emacs to use the mouse
    :disable useless menu bar
-   
+
    #+BEGIN_SRC emacs-lisp
 (when window-system
   (tooltip-mode -1)
@@ -125,95 +121,100 @@ this lines should be add to =~/.emacs=
   (scroll-bar-mode -1))
 (menu-bar-mode -1)
    #+END_SRC
-   
-   
+
+
 * Global Configuration
 ** Visual
-*** Color Theme
-    
+*** color theme
+
     Monokai Color Theme
-    
+
+    #+BEGIN_SRC emacs-lisp
+    (use-package monokai-theme :ensure t)
+    #+END_SRC
+
     #+BEGIN_SRC emacs-lisp
 (use-package color-theme
 	:ensure t
-	:init (use-package monokai-theme :ensure t)
 	:config (load-theme 'monokai t))
     #+END_SRC
-    
+
 *** font
-    
+
     Use the Inconsolata font if it’s installed on the system.
-    
+
     #+BEGIN_SRC emacs-lisp
 (when (member "Inconsolata" (font-family-list))
   (set-face-attribute 'default nil :font "Inconsolata-14"))
     #+END_SRC
-    
+
 *** tabbar
-    
+
     tabbar mode (monokai style)
-    
+
     #+BEGIN_SRC emacs-lisp
-(use-package tabbar
-			 :ensure t
-			 :config
-			 (set-face-attribute
-			  'tabbar-default nil
-			  :background "gray20"
-			  :foreground "gray20"
-			  :box '(:line-width 1 :color "gray20" :style nil))
-			 (set-face-attribute
-			  'tabbar-unselected nil
-			  :background "gray30"
-			  :foreground "white"
-			  :box '(:line-width 5 :color "gray30" :style nil))
-			 (set-face-attribute
-			  'tabbar-selected nil
-			  :background "gray75"
-			  :foreground "#A41F99"
-			  :box '(:line-width 5 :color "gray75" :style nil))
-			 (set-face-attribute
-			  'tabbar-highlight nil
-			  :background "white"
-			  :foreground "black"
-			  :underline nil
-			  :box '(:line-width 5 :color "white" :style nil))
-			 (set-face-attribute
-			  'tabbar-button nil
-			  :box '(:line-width 1 :color "gray20" :style nil))
-			 (set-face-attribute
-			  'tabbar-separator nil
-			  :background "grey20"
-			  :height 0.1)
+      (use-package tabbar
+        :ensure t
+        :config
+        ;; set monoaki style tabbar
+        (set-face-attribute
+         'tabbar-default nil
+         :background "gray20"
+         :foreground "gray20"
+         :box '(:line-width 1 :color "gray20" :style nil))
+        (set-face-attribute
+         'tabbar-unselected nil
+         :background "gray30"
+         :foreground "white"
+         :box '(:line-width 5 :color "gray30" :style nil))
+        (set-face-attribute
+         'tabbar-selected nil
+         :background "gray75"
+         :foreground "#A41F99"
+         :box '(:line-width 5 :color "gray75" :style nil))
+        (set-face-attribute
+         'tabbar-highlight nil
+         :background "white"
+         :foreground "black"
+         :underline nil
+         :box '(:line-width 5 :color "white" :style nil))
+        (set-face-attribute
+         'tabbar-button nil
+         :box '(:line-width 1 :color "gray20" :style nil))
+        (set-face-attribute
+         'tabbar-separator nil
+         :background "grey20"
+         :height 0.1)
 
+        ;; Change padding of the tabs
+        ;; we also need to set separator to avoid overlapping tabs by highlighted tabs
+        (custom-set-variables
+         '(tabbar-separator (quote (1.0))))
 
-			 ;; Change padding of the tabs
-			 ;; we also need to set separator to avoid overlapping tabs by highlighted tabs
-			 (custom-set-variables
-			  '(tabbar-separator (quote (1.0))))
-			 ;; adding spaces
-			 (defun tabbar-buffer-tab-label (tab)
-			   "Return a label for TAB.
-That is, a string used to represent it on the tab bar."
-			   (let ((label  (if tabbar--buffer-show-groups
-								 (format " [%s] " (tabbar-tab-tabset tab))
-							   (format " %s " (tabbar-tab-value tab)))))
-				 ;; Unless the tab bar auto scrolls to keep the selected tab
-				 ;; visible, shorten the tab label to keep as many tabs as possible
-				 ;; in the visible area of the tab bar.
-				 (if tabbar-auto-scroll-flag
-					 label
-				   (tabbar-shorten
-					label (max 1 (/ (window-width)
-									(length (tabbar-view
-											 (tabbar-current-tabset)))))))))
-			 (tabbar-mode t))
+        ;; adding spaces
+        (defun tabbar-buffer-tab-label (tab)
+          "Return a label for TAB.
+      That is, a string used to represent it on the tab bar."
+          (let ((label  (if tabbar--buffer-show-groups
+                            (format " [%s] " (tabbar-tab-tabset tab))
+                          (format " %s " (tabbar-tab-value tab)))))
+            ;; Unless the tab bar auto scrolls to keep the selected tab
+            ;; visible, shorten the tab label to keep as many tabs as possible
+            ;; in the visible area of the tab bar.
+            (if tabbar-auto-scroll-flag
+                label
+              (tabbar-shorten
+               label (max 1 (/ (window-width)
+                               (length (tabbar-view
+                                        (tabbar-current-tabset)))))))))
+
+        (tabbar-mode t))
     #+END_SRC
-    
-*** NyanCat Progress
-    
+
+*** nyancat progress
+
     nyan cat progress animation
-    
+
     #+BEGIN_SRC emacs-lisp
 (use-package nyan-mode :disabled t
 :ensure t
@@ -221,35 +222,34 @@ That is, a string used to represent it on the tab bar."
 (nyan-mode t)
 (nyan-start-animation))
     #+END_SRC
-*** Powerline
+*** powerline
     #+BEGIN_SRC emacs-lisp
 (use-package powerline
 			 :ensure t
 			 :config
 			 (powerline-default-theme))
     #+END_SRC
-    
-*** Hightlights
+
+*** hightlights
 **** volatile
-     
+
      volatile-highlights
-     
+
      #+BEGIN_SRC emacs-lisp
 (use-package volatile-highlights
 			 :ensure t
 			 :config
 			 (volatile-highlights-mode t))
      #+END_SRC
-     
+
 *** org-babel
-    
+
     color source block
-    
-        
+
 ** functions
-   
+
    execve
-   
+
    #+BEGIN_SRC emacs-lisp
 (defun execvp (&rest args)
   "Simulate C's execvp() function.
@@ -257,188 +257,261 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
   (let ((cmd (mapconcat 'shell-quote-argument args " ")))
     (shell-command-to-string cmd)))
    #+END_SRC
-   
+
 ** Undo - Redo
 *** undo-tree
+
     #+BEGIN_SRC emacs-lisp
-(use-package undo-tree
-  :defer t
-  :ensure t
-  :diminish undo-tree-mode
-  :config
-  (progn
-    (global-undo-tree-mode)
-    (setq undo-tree-visualizer-timestamps t)
-    (setq undo-tree-visualizer-diff t)))
+      (use-package undo-tree
+        :defer t
+        :ensure t
+        :diminish undo-tree-mode
+        :config
+        (progn
+          (global-undo-tree-mode)
+          (setq undo-tree-visualizer-timestamps t)
+          (setq undo-tree-visualizer-diff t)))
     #+END_SRC
-    
+
 *** winner-mode
     #+BEGIN_SRC emacs-lisp
-(use-package winner
-  :ensure t
-  :defer t
-  :config (winner-mode 1))
+      (use-package winner
+        :ensure t
+        :defer t
+        :config (winner-mode 1))
     #+END_SRC
-    
+
 ** Ido
-   
+
    install ido
-   
+
    #+BEGIN_SRC emacs-lisp
-(use-package ido
-  :config
-  (progn
-  (ido-mode 1)
-  (ido-everywhere 1)
-  (setq ido-default-buffer-method 'selected-window)))
+     (use-package ido
+       :config
+       (progn
+         (ido-mode 1)
+         (ido-everywhere 1)
+         (setq ido-default-buffer-method 'selected-window)))
 
    #+END_SRC
-   
+
    ido ubiquitous
-   
-   #+BEGIN_SRC emacs-lisp
-(use-package ido-ubiquitous
-	:ensure t
-	:init
-	(setq org-completion-use-ido t)
-	(setq magit-completing-read-function 'magit-ido-completing-read)
-	:config
-	(ido-ubiquitous-mode 1))
-   #+END_SRC
-   
-** helm
-*** helm
-    
-    incremental and narrowing framework
-    
-    #+BEGIN_SRC emacs-lisp
-(use-package helm
-  :ensure t
-  :config
-  (helm-mode))
-    #+END_SRC
-    
-** History
-   
-   save history
-   
-   #+BEGIN_SRC emacs-lisp
-(setq savehist-file "~/.emacs.d/savehist")
-(savehist-mode 1)
-(setq history-length t)
-(setq history-delete-duplicates t)
-(setq savehist-save-minibuffer-history 1)
-(setq savehist-additional-variables
-      '(kill-ring
-        search-ring
-        regexp-search-ring))
-   #+END_SRC
-   
-** Whitespace
-   
-   No whitespace at the end of the line
-   
-   #+BEGIN_SRC emacs-lisp
-(defun del-end-whitespace ()
-  "Deletes all blank lines at the end of the file, even the last one"
-  (interactive)
-  (save-excursion
-    (save-restriction
-      (widen)
-      (goto-char (point-max))
-      (delete-blank-lines)
-      (let ((trailnewlines (abs (skip-chars-backward "\n\t"))))
-      (if (> trailnewlines 1)
-          (progn
-	        (delete-char trailnewlines)))))))
-   #+END_SRC
-   
-** auto-complete
-   
-   #+BEGIN_SRC emacs-lisp
-(use-package company
-  :ensure t
-  :config
-  (add-hook 'prog-mode-hook 'company-mode))
-   #+END_SRC
-   
-** Snippets
-   
-   load yas
-   
-   #+BEGIN_SRC emacs-lisp
-(use-package yasnippet
-			 :ensure t
-			 :init
-			 (setq yas-snippet-dirs "~/.emacs.d/snippets") ;; not really need - default yas folder
-			 (yas-global-mode 1))
-   #+END_SRC
-   
-** PCRE
-   
-   I prefere to use PCRE instead of emacs regex engine
-   
-   #+BEGIN_SRC emcas_lisp
-(use-package pcre2lisp
-			 :ensure t
-			 :config
-			 (pcre-mode))
-   #+END_SRC
-   
-   
-* Coding 
-** PHP-mode
-   #+BEGIN_SRC emacs-list
-(use-package php-mode :ensure t :defer t)
-   #+END_SRC
-   
-   
-* Org
-** Souce Block 
-*** Fontifaction
-    
-    #+BEGIN_SRC emacs-lisp
-(setq org-src-fontify-natively t)
-    #+END_SRC
-    
-    
-* Key
-** Navigation
-   
-   Jump between parenthesis
-   
-   #+BEGIN_SRC emacs_lisp
-(global-set-key (kbd "C-x <down>") 'forward-sexp)
-(global-set-key (kbd "C-x <up>") 'backward-sexp)
-   #+END_SRC
-   
-** override
-   
-   commande
-   #+BEGIN_SRC emacs_lisp
-(global-set-key (kbd "C-x x") 'hlm)
-   #+END_SRC
-   
-   #+BEGIN_SRC emacs_lisp
-(global-set-key (kbd "C-x <down>") 'forward-sexp)
-(global-set-key (kbd "C-x <up>") 'backward-sexp)
-   #+END_SRC
-   
-** New line
-   
-   always indent on new line
-   
-   #+BEGIN_SRC emacs-lisp
-   (global-set-key (kbd "RET") 'newline-and-indent)
-   #+END_SRC
-   
-   #+BEGIN_SRC emacs-lisp
-(defun sanityinc/kill-back-to-indentation ()
-  "Kill from point back to the first non-whitespace character on the line."
-  (interactive)
-  (let ((prev-pos (point)))
-    (back-to-indentation)
-    (kill-region (point) prev-pos)))
 
-(bind-key "C-M-<backspace>" 'sanityinc/kill-back-to-indentation)
+   #+BEGIN_SRC emacs-lisp
+     (use-package ido-ubiquitous
+       :ensure t
+       :init
+       (setq org-completion-use-ido t)
+       (setq magit-completing-read-function 'magit-ido-completing-read)
+       :config
+       (ido-ubiquitous-mode 1))
+   #+END_SRC
+
+** Helm
+*** helm
+
+    Incremental and narrowing framework
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package helm
+        :ensure t
+        :config
+        (helm-mode))
+    #+END_SRC
+
+** History
+
+   save history
+
+   #+BEGIN_SRC emacs-lisp
+     (setq savehist-file "~/.emacs.d/savehist")
+     (savehist-mode 1)
+     (setq history-length t)
+     (setq history-delete-duplicates t)
+     (setq savehist-save-minibuffer-history 1)
+     (setq savehist-additional-variables
+           '(kill-ring
+             search-ring
+             regexp-search-ring))
+   #+END_SRC
+
+** Backup
+
+   store backup in .emacs.d instead of the current directory
+
+   #+BEGIN_SRC emacs-lisp
+     (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
+
+     (setq delete-old-versions -1)
+     (setq version-control t)
+     (setq vc-make-backup-files t)
+     (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
+   #+END_SRC
+
+** moccure
+
+   moccure color
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package color-moccur
+       :ensure t
+       :commands (isearch-moccur isearch-all)
+       :bind ("M-s O" . moccur)
+       :init
+       (bind-key "M-o" 'isearch-moccur isearch-mode-map)
+       (bind-key "M-O" 'isearch-moccur-all isearch-mode-map)
+       :config
+       (use-package moccur-edit))
+   #+END_SRC
+
+** Whitespace
+
+   No whitespace at the end of the line
+
+   #+BEGIN_SRC emacs-lisp
+     (add-hook 'before-save-hook 'delete-trailing-whitespace)
+   #+END_SRC
+
+   Deletes all blank lines at the end of the file
+
+   #+BEGIN_SRC emacs-lisp
+     (defun del-end-whitespace ()
+       "Deletes all blank lines at the end of the file, even the last one"
+       (interactive)
+       (save-excursion
+         (save-restriction
+           (widen)
+           (goto-char (point-max))
+           (delete-blank-lines)
+           (let ((trailnewlines (abs (skip-chars-backward "\n\t"))))
+           (if (> trailnewlines 1)
+               (progn
+                     (delete-char trailnewlines)))))))
+   #+END_SRC
+
+** Auto-complete
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package company
+       :ensure t
+       :config
+       (add-hook 'prog-mode-hook 'company-mode))
+   #+END_SRC
+
+** Snippets
+
+   load yas
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package yasnippet
+       :ensure t
+       :init
+       (setq yas-snippet-dirs "~/.emacs.d/snippets") ;; not really need - default yas folder
+       (yas-global-mode 1))
+   #+END_SRC
+
+** Regexp
+*** visual regexp
+
+	visual regexp replace
+
+	#+BEGIN_SRC emacs-lisp
+      (use-package visual-regexp
+        :ensure t
+        :config
+        (define-key global-map (kbd "C-c r") 'vr/replace)
+        (define-key global-map (kbd "C-c q") 'vr/query-replace)
+        (define-key global-map (kbd "C-c m") 'vr/mc-mark))
+	#+END_SRC
+
+*** pcre
+
+   	I prefere to use PCRE instead of emacs regex engine
+
+   	#+BEGIN_SRC emacs-lisp
+      (use-package pcre2el
+        :ensure t
+        :config
+        (pcre-mode))
+   	#+END_SRC
+
+	Combine it with Visual Regexp
+
+	#+BEGIN_SRC emacs-lisp
+      (use-package visual-regexp-steroids
+        :ensure t
+        :config
+        (custom-set-variables
+         '(vr/engine (quote pcre2el))))
+	#+END_SRC
+
+** Key Strokes
+** Indent
+
+   set global indent
+
+   #+BEGIN_SRC emacs-lisp
+     (setq-default tab-width 4)
+     (setq-default indent-tabs-mode t)
+     (setq-default c-basic-offset 4)
+     (setq-default c-default-style "linux")
+     (c-set-offset 'substatement-open 0)   ;;; No indent for open bracket
+     (setq-default tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60
+                                     64 68 72 76 80 84 88 92 96 100 104 108 112 116 120))
+   #+END_SRC
+
+** keychords
+
+
+* Coding
+** PHP-mode
+
+   php mode configuration
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package php-mode
+       :mode "\\.php\\'"
+       :interpreter "php"
+       :ensure t)
+   #+END_SRC
+
+
+* Org
+** Souce Block
+*** fontifaction
+
+    =not working=
+
+    #+BEGIN_SRC emacs-lisp
+;;      (setq org-src-fontify-natively t)
+    #+END_SRC
+
+
+* Special Binding
+** Navigation
+
+   Jump between parenthesis
+
+   #+BEGIN_SRC emacs-lisp
+     (global-set-key (kbd "C-x <down>") 'forward-sexp)
+     (global-set-key (kbd "C-x <up>") 'backward-sexp)
+   #+END_SRC
+
+** override
+** New line
+
+   always indent on new line
+
+   #+BEGIN_SRC emacs-lisp
+     (global-set-key (kbd "RET") 'newline-and-indent)
+   #+END_SRC
+
+   #+BEGIN_SRC emacs-lisp
+     (defun sanityinc/kill-back-to-indentation ()
+       "Kill from point back to the first non-whitespace character on the line."
+       (interactive)
+       (let ((prev-pos (point)))
+         (back-to-indentation)
+         (kill-region (point) prev-pos)))
+     (bind-key "C-M-<backspace>" 'sanityinc/kill-back-to-indentation)
    #+END_SRC
