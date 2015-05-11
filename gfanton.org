@@ -106,7 +106,7 @@
 
 *** load custom el files
     #+BEGIN_SRC emacs-lisp
-;;(add-to-list 'load-path "~/elisp")
+      ;; (add-to-list 'load-path "~/elisp")
     #+END_SRC
 
 ** Windows
@@ -124,128 +124,6 @@
 
 
 * GLOBAL CONFIGURATION
-** Visual
-*** color theme
-
-    Monokai Color Theme
-
-    #+BEGIN_SRC emacs-lisp
-    (use-package monokai-theme :ensure t)
-    #+END_SRC
-
-    #+BEGIN_SRC emacs-lisp
-(use-package color-theme
-	:ensure t
-	:config (load-theme 'monokai t))
-    #+END_SRC
-
-*** font
-
-    Use the Inconsolata font if it’s installed on the system.
-
-    #+BEGIN_SRC emacs-lisp
-(when (member "Inconsolata" (font-family-list))
-  (set-face-attribute 'default nil :font "Inconsolata-14"))
-    #+END_SRC
-
-*** tabbar
-
-    tabbar mode (monokai style)
-
-    #+BEGIN_SRC emacs-lisp
-      (use-package tabbar
-        :ensure t
-        :config
-        ;; set monoaki style tabbar
-        (set-face-attribute
-         'tabbar-default nil
-         :background "gray20"
-         :foreground "gray20"
-         :box '(:line-width 1 :color "gray20" :style nil))
-        (set-face-attribute
-         'tabbar-unselected nil
-         :background "gray30"
-         :foreground "white"
-         :box '(:line-width 5 :color "gray30" :style nil))
-        (set-face-attribute
-         'tabbar-selected nil
-         :background "gray75"
-         :foreground "#A41F99"
-         :box '(:line-width 5 :color "gray75" :style nil))
-        (set-face-attribute
-         'tabbar-highlight nil
-         :background "white"
-         :foreground "black"
-         :underline nil
-         :box '(:line-width 5 :color "white" :style nil))
-        (set-face-attribute
-         'tabbar-button nil
-         :box '(:line-width 1 :color "gray20" :style nil))
-        (set-face-attribute
-         'tabbar-separator nil
-         :background "grey20"
-         :height 0.1)
-
-        ;; Change padding of the tabs
-        ;; we also need to set separator to avoid overlapping tabs by highlighted tabs
-        (custom-set-variables
-         '(tabbar-separator (quote (1.0))))
-
-        ;; adding spaces
-        (defun tabbar-buffer-tab-label (tab)
-          "Return a label for TAB.
-      That is, a string used to represent it on the tab bar."
-          (let ((label  (if tabbar--buffer-show-groups
-                            (format " [%s] " (tabbar-tab-tabset tab))
-                          (format " %s " (tabbar-tab-value tab)))))
-            ;; Unless the tab bar auto scrolls to keep the selected tab
-            ;; visible, shorten the tab label to keep as many tabs as possible
-            ;; in the visible area of the tab bar.
-            (if tabbar-auto-scroll-flag
-                label
-              (tabbar-shorten
-               label (max 1 (/ (window-width)
-                               (length (tabbar-view
-                                        (tabbar-current-tabset)))))))))
-
-        (tabbar-mode t))
-    #+END_SRC
-
-*** nyancat progress
-
-    nyan cat progress animation
-
-    #+BEGIN_SRC emacs-lisp
-(use-package nyan-mode :disabled t
-:ensure t
-:config
-(nyan-mode t)
-(nyan-start-animation))
-    #+END_SRC
-*** powerline
-    #+BEGIN_SRC emacs-lisp
-(use-package powerline
-			 :ensure t
-			 :config
-			 (powerline-default-theme))
-    #+END_SRC
-
-*** hightlights
-**** volatile
-
-     volatile-highlights
-
-     #+BEGIN_SRC emacs-lisp
-(use-package volatile-highlights
-			 :ensure t
-			 :config
-			 (volatile-highlights-mode t))
-     #+END_SRC
-
-*** org-babel
-
-    color source block
-
 ** Functions
 
    execve
@@ -304,7 +182,8 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
        (setq org-completion-use-ido t)
        (setq magit-completing-read-function 'magit-ido-completing-read)
        :config
-       (ido-ubiquitous-mode 1))
+       (ido-ubiquitous-mode 1)
+       (global-set-key (kbd "C-x C-a") 'imenus))
    #+END_SRC
 
 ** Helm
@@ -316,7 +195,8 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
       (use-package helm
         :ensure t
         :config
-        (helm-mode))
+        (helm-mode)
+        (global-set-key (kbd "C-x a") 'helm-imenu))
     #+END_SRC
 
 ** History
@@ -346,6 +226,22 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
      (setq version-control t)
      (setq vc-make-backup-files t)
      (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
+   #+END_SRC
+
+** Bookmark
+
+   ensure bookmark is installed
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package bookmark
+       :ensure t)
+   #+END_SRC
+
+   add Bookmark+
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package bookmark+
+       :ensure t)
    #+END_SRC
 
 ** Moccure
@@ -445,7 +341,7 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
          '(vr/engine (quote pcre2el))))
 	#+END_SRC
 
-** Key Strokes
+** TODO Key Strokes
 ** Indent
 
    set global indent
@@ -461,10 +357,165 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
    #+END_SRC
 
 ** Keychords
+** Flycheck
+
+   flycheck global configuration
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package flycheck
+       :ensure t)
+   #+END_SRC
+
+
+** TODO FTP
+
+   Use ftp in passive
+
+   #+BEGIN_SRC emacs-lisp
+     (setq ange-ftp-ftp-program-name "pftp")
+   #+END_SRC
+
+
+
+* VISUAL
+** Color Theme
+
+    Monokai Color Theme
+
+    #+BEGIN_SRC emacs-lisp
+    (use-package monokai-theme :ensure t)
+    #+END_SRC
+
+    #+BEGIN_SRC emacs-lisp
+(use-package color-theme
+	:ensure t
+	:config (load-theme 'monokai t))
+    #+END_SRC
+
+** Font
+
+   Use the Inconsolata font if it’s installed on the system.
+
+   #+BEGIN_SRC emacs-lisp
+	 (when (member "Inconsolata" (font-family-list))
+	   (set-face-attribute 'default nil :font "Inconsolata-14"))
+   #+END_SRC
+
+   set face attribute height
+
+
+   #+BEGIN_SRC emacs-lisp
+	 (set-face-attribute 'default nil :height 110)
+   #+END_SRC
+
+** Tabbar
+
+   tabbar mode (monokai style)
+
+   #+BEGIN_SRC emacs-lisp
+	 (use-package tabbar
+	   :ensure t
+	   :config
+	   ;; set monoaki style tabbar
+	   (set-face-attribute
+		'tabbar-default nil
+		:background "gray20"
+		:foreground "gray20"
+		:box '(:line-width 1 :color "gray20" :style nil))
+	   (set-face-attribute
+		'tabbar-unselected nil
+		:background "gray30"
+		:foreground "white"
+		:box '(:line-width 1 :color "gray30" :style nil))
+	   (set-face-attribute
+		'tabbar-selected nil
+		:background "gray75"
+		:foreground "#A41F99"
+		:box '(:line-width 1 :color "gray75" :style nil))
+	   (set-face-attribute
+		'tabbar-highlight nil
+		:background "white"
+		:foreground "black"
+		:underline nil
+		:box '(:line-width 1 :color "white" :style nil))
+	   (set-face-attribute
+		'tabbar-button nil
+		:box '(:line-width 1 :color "gray20" :style nil))
+	   (set-face-attribute
+		'tabbar-separator nil
+		:background "grey20"
+		:height 0.1)
+
+	   ;; Change padding of the tabs
+	   ;; we also need to set separator to avoid overlapping tabs by highlighted tabs
+	   (custom-set-variables
+		'(tabbar-separator (quote (1.0))))
+
+	   ;; adding spaces
+	   (defun tabbar-buffer-tab-label (tab)
+		 "Return a label for TAB.
+	 That is, a string used to represent it on the tab bar."
+		 (let ((label  (if tabbar--buffer-show-groups
+						   (format " [%s] " (tabbar-tab-tabset tab))
+						 (format " %s " (tabbar-tab-value tab)))))
+		   ;; Unless the tab bar auto scrolls to keep the selected tab
+		   ;; visible, shorten the tab label to keep as many tabs as possible
+		   ;; in the visible area of the tab bar.
+		   (if tabbar-auto-scroll-flag
+			   label
+			 (tabbar-shorten
+			  label (max 1 (/ (window-width)
+							  (length (tabbar-view
+									   (tabbar-current-tabset)))))))))
+
+	   (tabbar-mode t))
+   #+END_SRC
+
+   Switch between major mode with arrow
+
+   #+BEGIN_SRC emacs-lisp
+	 (global-set-key (kbd "<M-left>") 'tabbar-backward-tab)
+	 (global-set-key (kbd "<M-right>") 'tabbar-forward-tab)
+   #+END_SRC
+
+** Nyancat Progress
+
+    nyan cat progress animation
+
+    #+BEGIN_SRC emacs-lisp
+(use-package nyan-mode :disabled t
+:ensure t
+:config
+(nyan-mode t)
+(nyan-start-animation))
+    #+END_SRC
+** Powerline
+   #+BEGIN_SRC emacs-lisp
+	 (use-package powerline
+				  :ensure t
+				  :config
+				  (powerline-default-theme))
+   #+END_SRC
+
+** Hightlights
+*** Volatile
+
+     volatile-highlights
+
+     #+BEGIN_SRC emacs-lisp
+(use-package volatile-highlights
+			 :ensure t
+			 :config
+			 (volatile-highlights-mode t))
+     #+END_SRC
+
+** Org-Babel
+
+   color source block
 
 
 * CODING
-** Php-Mode
+** Php
 
    php mode configuration
 
@@ -474,6 +525,17 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
        :interpreter "php"
        :ensure t)
    #+END_SRC
+
+   add flymake handler
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package flymake-phpcs
+       :ensure t)
+
+     (use-package flymake-php
+       :ensure t)
+   #+END_SRC
+
 
 
 * ORG
