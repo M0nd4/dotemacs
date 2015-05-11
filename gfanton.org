@@ -17,15 +17,15 @@
     #+END_SRC
 
 
-* Intialisation
-** encodage
+* INTIALISATION
+** Encodage
    Set =utf-8= as preferred coding system.
 
    #+BEGIN_SRC emacs-lisp
      (set-language-environment "UTF-8")
    #+END_SRC
 
-** emacs initialization
+** Emacs Initialization
 *** add package sources
 
     add repo
@@ -59,7 +59,7 @@
       (setq load-prefer-newer t)
     #+END_SRC
 
-** os configuration
+** Os Configuration
 
    Easy system check macro
 
@@ -98,7 +98,7 @@
        (setq interprogram-paste-function 'x-cut-buffer-or-selection-value))
      #+END_SRC
 
-** load files
+** Load Files
 *** private
     #+BEGIN_SRC emacs-lisp
 (load "~/.emacs.private" t)
@@ -109,7 +109,7 @@
 ;;(add-to-list 'load-path "~/elisp")
     #+END_SRC
 
-** windows
+** Windows
 
    Im not on emacs to use the mouse
    :disable useless menu bar
@@ -123,8 +123,8 @@
    #+END_SRC
 
 
-* Global Configuration
-** visual
+* GLOBAL CONFIGURATION
+** Visual
 *** color theme
 
     Monokai Color Theme
@@ -246,7 +246,7 @@
 
     color source block
 
-** functions
+** Functions
 
    execve
 
@@ -258,7 +258,7 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
     (shell-command-to-string cmd)))
    #+END_SRC
 
-** undo - redo
+** Undo - Redo
 *** undo-tree
 
     #+BEGIN_SRC emacs-lisp
@@ -281,7 +281,7 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
         :config (winner-mode 1))
     #+END_SRC
 
-** ido
+** Ido
 
    install ido
 
@@ -307,7 +307,7 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
        (ido-ubiquitous-mode 1))
    #+END_SRC
 
-** helm
+** Helm
 *** helm
 
     Incremental and narrowing framework
@@ -319,7 +319,7 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
         (helm-mode))
     #+END_SRC
 
-** history
+** History
 
    save history
 
@@ -335,7 +335,7 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
              regexp-search-ring))
    #+END_SRC
 
-** backup
+** Backup
 
    store backup in .emacs.d instead of the current directory
 
@@ -348,7 +348,7 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
      (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
    #+END_SRC
 
-** moccure
+** Moccure
 
    moccure color
 
@@ -364,7 +364,7 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
        (use-package moccur-edit))
    #+END_SRC
 
-** whitespace
+** Whitespace
 
    No whitespace at the end of the line
 
@@ -389,7 +389,7 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
                      (delete-char trailnewlines)))))))
    #+END_SRC
 
-** auto-complete
+** Auto-Complete
 
    #+BEGIN_SRC emacs-lisp
      (use-package company
@@ -398,7 +398,7 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
        (add-hook 'prog-mode-hook 'company-mode))
    #+END_SRC
 
-** snippets
+** Snippets
 
    load yas
 
@@ -410,7 +410,7 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
        (yas-global-mode 1))
    #+END_SRC
 
-** regexp
+** Regexp
 *** visual regexp
 
 	visual regexp replace
@@ -445,8 +445,8 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
          '(vr/engine (quote pcre2el))))
 	#+END_SRC
 
-** key strokes
-** indent
+** Key Strokes
+** Indent
 
    set global indent
 
@@ -460,11 +460,11 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
                                      64 68 72 76 80 84 88 92 96 100 104 108 112 116 120))
    #+END_SRC
 
-** keychords
+** Keychords
 
 
-* Coding
-** php-mode
+* CODING
+** Php-Mode
 
    php mode configuration
 
@@ -476,8 +476,8 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
    #+END_SRC
 
 
-* Org
-** souce block
+* ORG
+** Souce Block
 *** fontifaction
 
     =not working=
@@ -487,8 +487,8 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
     #+END_SRC
 
 
-* Special Binding
-** navigation
+* SPECIAL BINDING
+** Navigation
 
    Jump between parenthesis
 
@@ -497,8 +497,8 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
      (global-set-key (kbd "C-x <up>") 'backward-sexp)
    #+END_SRC
 
-** override
-** new line
+** Override
+** New Line
 
    always indent on new line
 
