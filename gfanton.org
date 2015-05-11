@@ -141,14 +141,12 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
 
     #+BEGIN_SRC emacs-lisp
       (use-package undo-tree
-        :defer t
         :ensure t
-        :diminish undo-tree-mode
         :config
-        (progn
-          (global-undo-tree-mode)
-          (setq undo-tree-visualizer-timestamps t)
-          (setq undo-tree-visualizer-diff t)))
+        (global-undo-tree-mode)
+        (setq undo-tree-visualizer-timestamps t)
+        (setq undo-tree-visualizer-diff t)
+        (global-set-key (kbd "C-x u") 'undo-tree-visualize))
     #+END_SRC
 
 *** winner-mode
@@ -158,6 +156,18 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
         :defer t
         :config (winner-mode 1))
     #+END_SRC
+
+** Imenus
+
+   list all method
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package imenus
+       :defer t
+       :ensure t
+       :config
+       (global-set-key (kbd "C-x C-a") 'imenus))
+   #+END_SRC
 
 ** Ido
 
@@ -182,8 +192,7 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
        (setq org-completion-use-ido t)
        (setq magit-completing-read-function 'magit-ido-completing-read)
        :config
-       (ido-ubiquitous-mode 1)
-       (global-set-key (kbd "C-x C-a") 'imenus))
+       (ido-ubiquitous-mode 1))
    #+END_SRC
 
 ** Helm
@@ -341,7 +350,6 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
          '(vr/engine (quote pcre2el))))
 	#+END_SRC
 
-** TODO Key Strokes
 ** Indent
 
    set global indent
@@ -356,16 +364,17 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
                                      64 68 72 76 80 84 88 92 96 100 104 108 112 116 120))
    #+END_SRC
 
-** Keychords
+** TODO Keychords
 ** Flycheck
 
    flycheck global configuration
 
    #+BEGIN_SRC emacs-lisp
      (use-package flycheck
-       :ensure t)
+       :ensure t
+       :config
+       (setq flycheck-check-syntax-automatically '(mode-enabled save)))
    #+END_SRC
-
 
 ** TODO FTP
 
@@ -374,6 +383,8 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
    #+BEGIN_SRC emacs-lisp
      (setq ange-ftp-ftp-program-name "pftp")
    #+END_SRC
+
+** Magit
 
 
 
@@ -559,7 +570,6 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
      (global-set-key (kbd "C-x <up>") 'backward-sexp)
    #+END_SRC
 
-** Override
 ** New Line
 
    always indent on new line
@@ -576,4 +586,12 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
          (back-to-indentation)
          (kill-region (point) prev-pos)))
      (bind-key "C-M-<backspace>" 'sanityinc/kill-back-to-indentation)
+   #+END_SRC
+
+** Go To Line
+
+   Go to line
+
+   #+BEGIN_SRC emacs-lisp
+     (global-set-key (kbd "M-g") 'goto-line)
    #+END_SRC
