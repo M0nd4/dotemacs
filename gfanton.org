@@ -18,14 +18,14 @@
 
 
 * Intialisation
-** Encodage
+** encodage
    Set =utf-8= as preferred coding system.
 
    #+BEGIN_SRC emacs-lisp
      (set-language-environment "UTF-8")
    #+END_SRC
 
-** Emacs initialization
+** emacs initialization
 *** add package sources
 
     add repo
@@ -59,7 +59,7 @@
       (setq load-prefer-newer t)
     #+END_SRC
 
-** OS Configuration
+** os configuration
 
    Easy system check macro
 
@@ -109,7 +109,7 @@
 ;;(add-to-list 'load-path "~/elisp")
     #+END_SRC
 
-** Windows
+** windows
 
    Im not on emacs to use the mouse
    :disable useless menu bar
@@ -124,7 +124,7 @@
 
 
 * Global Configuration
-** Visual
+** visual
 *** color theme
 
     Monokai Color Theme
@@ -258,7 +258,7 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
     (shell-command-to-string cmd)))
    #+END_SRC
 
-** Undo - Redo
+** undo - redo
 *** undo-tree
 
     #+BEGIN_SRC emacs-lisp
@@ -281,7 +281,7 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
         :config (winner-mode 1))
     #+END_SRC
 
-** Ido
+** ido
 
    install ido
 
@@ -307,7 +307,7 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
        (ido-ubiquitous-mode 1))
    #+END_SRC
 
-** Helm
+** helm
 *** helm
 
     Incremental and narrowing framework
@@ -319,7 +319,7 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
         (helm-mode))
     #+END_SRC
 
-** History
+** history
 
    save history
 
@@ -335,7 +335,7 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
              regexp-search-ring))
    #+END_SRC
 
-** Backup
+** backup
 
    store backup in .emacs.d instead of the current directory
 
@@ -364,7 +364,7 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
        (use-package moccur-edit))
    #+END_SRC
 
-** Whitespace
+** whitespace
 
    No whitespace at the end of the line
 
@@ -389,7 +389,7 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
                      (delete-char trailnewlines)))))))
    #+END_SRC
 
-** Auto-complete
+** auto-complete
 
    #+BEGIN_SRC emacs-lisp
      (use-package company
@@ -398,7 +398,7 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
        (add-hook 'prog-mode-hook 'company-mode))
    #+END_SRC
 
-** Snippets
+** snippets
 
    load yas
 
@@ -410,7 +410,7 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
        (yas-global-mode 1))
    #+END_SRC
 
-** Regexp
+** regexp
 *** visual regexp
 
 	visual regexp replace
@@ -445,8 +445,8 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
          '(vr/engine (quote pcre2el))))
 	#+END_SRC
 
-** Key Strokes
-** Indent
+** key strokes
+** indent
 
    set global indent
 
@@ -464,7 +464,7 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
 
 
 * Coding
-** PHP-mode
+** php-mode
 
    php mode configuration
 
@@ -477,7 +477,7 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
 
 
 * Org
-** Souce Block
+** souce block
 *** fontifaction
 
     =not working=
@@ -488,7 +488,7 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
 
 
 * Special Binding
-** Navigation
+** navigation
 
    Jump between parenthesis
 
@@ -498,7 +498,7 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
    #+END_SRC
 
 ** override
-** New line
+** new line
 
    always indent on new line
 
