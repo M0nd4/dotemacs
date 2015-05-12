@@ -1,4 +1,4 @@
-s#+TITLE: Emacs configuration file
+#+TITLE: Emacs configuration file
 #+AUTHOR: gfatnon
 #+BABEL: :cache yes
 #+LATEX_HEADER: \usepackage{parskip}
@@ -364,6 +364,9 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
    #+END_SRC
 
 ** TODO Keychords
+
+   Keychords Install
+
 ** Flycheck
 
    flycheck global configuration
