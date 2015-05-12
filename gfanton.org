@@ -194,6 +194,34 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
        (ido-ubiquitous-mode 1))
    #+END_SRC
 
+   ido yes or no
+   from [[https://github.com/DarwinAwardWinner/ido-yes-or-no/blob/master/ido-yes-or-no.el]]
+
+   #+BEGIN_SRC emacs-lisp
+     (define-minor-mode ido-yes-or-no-mode
+       "Use ido for `yes-or-no-p'."
+       nil
+       :global t
+       :group 'ido)
+
+     (defun ido-yes-or-no-p (prompt)
+       "Ask user a yes-or-no question using ido."
+       (let* ((yes-or-no-prompt (concat prompt " "))
+              (choices '("yes" "no"))
+              (answer (ido-completing-read yes-or-no-prompt choices nil 'require-match)))
+         (string= answer "yes")))
+
+     (defadvice yes-or-no-p (around use-ido activate)
+       (if ido-yes-or-no-mode
+           (setq ad-return-value (ido-yes-or-no-p prompt))
+         ad-do-it))
+
+     (provide 'ido-yes-or-no)
+     ;;; ido-yes-or-no.el ends here
+   #+END_SRC
+
+
+
 ** Helm
 *** helm
 
@@ -349,6 +377,16 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
          '(vr/engine (quote pcre2el))))
 	#+END_SRC
 
+** Edbi
+
+   Database viewer
+   Need cpan installed
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package edbi
+       :ensure t)
+   #+END_SRC
+
 ** Indent
 
    set global indent
@@ -386,7 +424,7 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
      (setq ange-ftp-ftp-program-name "pftp")
    #+END_SRC
 
-** Magit
+** TODO Magit
 
 
 
@@ -528,27 +566,61 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
 
 
 * CODING
-** Php
 
-   php mode configuration
+** Php Mode
+
+   	php mode configuration
+
+   	#+BEGIN_SRC emacs-lisp
+      (use-package php-mode
+        :mode "\\.php\\'"
+        :interpreter "php"
+        :ensure t
+        :config
+        (setq php-mode-force-pear t)
+        (add-hook 'php-mode-hook
+                  '(lambda ()
+                     (setq indent-tabs-mode t)
+                     (setq tab-width 4)
+                     (setq c-basic-indent 4)
+                     (c-set-offset 'substatement-open 0))))
+   	#+END_SRC
+
+   	add flymake handler
+
+   	#+BEGIN_SRC emacs-lisp
+	  (use-package flymake-phpcs
+	   	:ensure t)
+
+	  (use-package flymake-php
+	   	:ensure t)
+   	#+END_SRC
+
+** Web Mode
+
+   Web Mode
 
    #+BEGIN_SRC emacs-lisp
-     (use-package php-mode
-       :mode "\\.php\\'"
-       :interpreter "php"
-       :ensure t)
+     (use-package web-mode
+       :mode "\\.html?\\'"
+       :defer t
+       :ensure t
+       :config
+       (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+       (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+       (add-to-list 'auto-mode-alist '("\\.jsp\\'" . web-mode))
+       (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+       (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+       (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+       (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+
+       (setq web-mode-engines-alist '(("php" . "\\.phtml\\'") ("blade" . "\\.blade\\.")) )
+       (setq web-mode-extra-auto-pairs '(("erb" . (("open" "close"))) ("php" . (("open" "close") ("open" "close"))) ))
+       (setq web-mode-enable-auto-pairing t)
+       (setq web-mode-enable-part-face t)
+       (setq web-mode-enable-css-colorization t)
+       (setq web-mode-enable-auto-pairing t))
    #+END_SRC
-
-   add flymake handler
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package flymake-phpcs
-       :ensure t)
-
-     (use-package flymake-php
-       :ensure t)
-   #+END_SRC
-
 
 
 * ORG
