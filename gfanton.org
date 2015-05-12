@@ -1,4 +1,4 @@
-#+TITLE: Emacs configuration file
+s#+TITLE: Emacs configuration file
 #+AUTHOR: gfatnon
 #+BABEL: :cache yes
 #+LATEX_HEADER: \usepackage{parskip}
@@ -39,8 +39,7 @@
     refresh on first init
 
     #+BEGIN_SRC emacs-lisp
-      (unless (file-exists-p "~/.emacs.d/elpa")
-        (package-refresh-contents) nil)
+      (package-refresh-contents)
     #+END_SRC
 
 *** init packages
@@ -159,7 +158,7 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
 
 ** Imenus
 
-   list all method
+   list all methods
 
    #+BEGIN_SRC emacs-lisp
      (use-package imenus
