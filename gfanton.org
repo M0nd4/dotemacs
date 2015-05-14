@@ -155,6 +155,19 @@
          (uniquify-all-lines-region (point-min) (point-max)))
    #+END_SRC
 
+** Comment
+
+   Multine comment
+
+   #+BEGIN_SRC emacs-lisp
+     (defun my-comment-multiline ()
+       (set (make-local-variable 'comment-start) " /*")
+       (set (make-local-variable 'comment-padding) "*")
+       (set (make-local-variable 'comment-end) "*/")
+       (set (make-local-variable 'comment-style) 'indent))
+   #+END_SRC
+
+** TODO Buffer
 ** Alias
 
    yes or no -> y or n
@@ -254,12 +267,13 @@
     Incremental and narrowing framework
 
     #+BEGIN_SRC emacs-lisp
-      (use-package helm
-        :ensure t
-        :config
-        (helm-mode)
-        (global-set-key (kbd "C-x a") 'helm-imenu))
-    #+END_SRC
+       (use-package helm
+         :ensure t
+         :config
+         (helm-mode)
+         (global-set-key (kbd "C-x a") 'helm-imenu)
+         (global-set-key (kbd "C-x C-b") 'helm-buffers-list))
+   #+END_SRC
 
 ** History
 
@@ -468,6 +482,14 @@
      (global-set-key (kbd "C-x g") 'magit-status)
    #+END_SRC
 
+   FIle notify
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package magit-filenotify
+       :ensure t
+       :config
+       (add-hook 'magit-status-mode-hook 'magit-filenotify-mode))
+   #+END_SRC
 
 
 
@@ -645,6 +667,7 @@
 
 	#+BEGIN_SRC emacs-lisp
       (add-hook 'php-mode-hook 'my-php-mode-hook)
+      (add-hook 'php-mode-hook 'my-comment-multiline)
       (defun my-php-mode-hook ()
         (setq indent-tabs-mode t)
         (let ((my-tab-width 4))
