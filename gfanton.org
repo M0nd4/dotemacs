@@ -128,11 +128,52 @@
    execve
 
    #+BEGIN_SRC emacs-lisp
-(defun execvp (&rest args)
-  "Simulate C's execvp() function.
-Quote each argument seperately, join with spaces and call shell-command-to-string to run in a shell."
-  (let ((cmd (mapconcat 'shell-quote-argument args " ")))
-    (shell-command-to-string cmd)))
+     (defun execvp (&rest args)
+       "Simulate C's execvp() function.
+     Quote each argument seperately, join with spaces and call shell-command-to-string to run in a shell."
+       (let ((cmd (mapconcat 'shell-quote-argument args " ")))
+         (shell-command-to-string cmd)))
+   #+END_SRC
+
+   uniquify line
+
+   #+BEGIN_SRC emacs-lisp
+      (defun uniquify-all-lines-region (start end)
+         "Find duplicate lines in region START to END keeping first occurrence."
+         (interactive "*r")
+         (save-excursion
+           (let ((end (copy-marker end)))
+             (while
+                 (progn
+                   (goto-char start)
+                   (re-search-forward "^\\(.*\\)\n\\(\\(.*\n\\)*\\)\\1\n" end t))
+               (replace-match "\\1\n\\2")))))
+
+       (defun uniquify-all-lines-buffer ()
+         "Delete duplicate lines in buffer and keep first occurrence."
+         (interactive "*")
+         (uniquify-all-lines-region (point-min) (point-max)))
+   #+END_SRC
+
+** Comment
+
+   Multine comment
+
+   #+BEGIN_SRC emacs-lisp
+     (defun my-comment-multiline ()
+       (set (make-local-variable 'comment-start) " /*")
+       (set (make-local-variable 'comment-padding) "*")
+       (set (make-local-variable 'comment-end) "*/")
+       (set (make-local-variable 'comment-style) 'indent))
+   #+END_SRC
+
+** TODO Buffer
+** Alias
+
+   yes or no -> y or n
+
+   #+BEGIN_SRC emacs-lisp
+     (defalias 'yes-or-no-p 'y-or-n-p)
    #+END_SRC
 
 ** Undo - Redo
@@ -194,18 +235,45 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
        (ido-ubiquitous-mode 1))
    #+END_SRC
 
+   ido yes or no
+   from [[https://github.com/DarwinAwardWinner/ido-yes-or-no/blob/master/ido-yes-or-no.el]]
+
+   #+BEGIN_SRC emacs-lisp
+     (define-minor-mode ido-yes-or-no-mode
+       "Use ido for `yes-or-no-p'."
+       nil
+       :global t
+       :group 'ido)
+
+     (defun ido-yes-or-no-p (prompt)
+       "Ask user a yes-or-no question using ido."
+       (let* ((yes-or-no-prompt (concat prompt " "))
+              (choices '("yes" "no"))
+              (answer (ido-completing-read yes-or-no-prompt choices nil 'require-match)))
+         (string= answer "yes")))
+
+     (defadvice yes-or-no-p (around use-ido activate)
+       (if ido-yes-or-no-mode
+           (setq ad-return-value (ido-yes-or-no-p prompt))
+         ad-do-it))
+
+     (provide 'ido-yes-or-no)
+     ;;; ido-yes-or-no.el ends here
+   #+END_SRC
+
 ** Helm
 *** helm
 
     Incremental and narrowing framework
 
     #+BEGIN_SRC emacs-lisp
-      (use-package helm
-        :ensure t
-        :config
-        (helm-mode)
-        (global-set-key (kbd "C-x a") 'helm-imenu))
-    #+END_SRC
+       (use-package helm
+         :ensure t
+         :config
+         (helm-mode)
+         (global-set-key (kbd "C-x a") 'helm-imenu)
+         (global-set-key (kbd "C-x C-b") 'helm-buffers-list))
+   #+END_SRC
 
 ** History
 
@@ -349,6 +417,16 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
          '(vr/engine (quote pcre2el))))
 	#+END_SRC
 
+** Edbi
+
+   Database viewer
+   Need cpan installed
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package edbi
+       :ensure t)
+   #+END_SRC
+
 ** Indent
 
    set global indent
@@ -356,11 +434,9 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
    #+BEGIN_SRC emacs-lisp
      (setq-default tab-width 4)
      (setq-default indent-tabs-mode t)
-     (setq-default c-basic-offset 4)
-     (setq-default c-default-style "linux")
+     (setq c-default-style "bsd"
+           c-basic-offset 4)
      (c-set-offset 'substatement-open 0)   ;;; No indent for open bracket
-     (setq-default tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60
-                                     64 68 72 76 80 84 88 92 96 100 104 108 112 116 120))
    #+END_SRC
 
 ** Cedet
@@ -390,7 +466,10 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
      (use-package flycheck
        :ensure t
        :config
-       (setq flycheck-check-syntax-automatically '(mode-enabled save)))
+       (progn
+         (add-hook 'after-init-hook #'global-flycheck-mode)
+         (setq flycheck-check-syntax-automatically '(mode-enabled save))
+         (setq flycheck-phpcs-standard "Prestashop")))
    #+END_SRC
 
 ** TODO FTP
@@ -401,24 +480,58 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
      (setq ange-ftp-ftp-program-name "pftp")
    #+END_SRC
 
-** Magit
+** TODO Magit
+
+   Git manager for emacs
+
+   #+BEGIN_SRC emacs-lisp
+          (use-package magit
+            :defer t
+            :init (setq magit-last-seen-setup-instructions "1.4.0")
+            :ensure t)
+   #+END_SRC
+
+   Bind git status
+
+   #+BEGIN_SRC emacs-lisp
+     (global-set-key (kbd "C-x g") 'magit-status)
+   #+END_SRC
+
+   FIle notify
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package magit-filenotify
+       :ensure t
+       :config
+       (add-hook 'magit-status-mode-hook 'magit-filenotify-mode))
+   #+END_SRC
 
 
 
 * VISUAL
 ** Color Theme
 
-    Monokai Color Theme
+    Init color-theme
 
     #+BEGIN_SRC emacs-lisp
-    (use-package monokai-theme :ensure t)
+      (use-package monokai-theme :ensure t)
     #+END_SRC
 
+	Set monokai Theme
+
     #+BEGIN_SRC emacs-lisp
-(use-package color-theme
-	:ensure t
-	:config (load-theme 'monokai t))
+      (use-package color-theme
+        :ensure t
+        :config (load-theme 'monokai t))
     #+END_SRC
+
+	Change default background
+
+	#+BEGIN_SRC emacs-lisp
+      (when (display-graphic-p)
+            (color-theme-install-frame-params
+              '((background-color . "#161711"))))
+	#+END_SRC
 
 ** Font
 
@@ -537,33 +650,74 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
 			 (volatile-highlights-mode t))
      #+END_SRC
 
-** Org-Babel
+** Org Babel
 
    color source block
 
+** Pretty Mode
+
+   Prettify Symbole
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package pretty-mode :disabled t
+       :ensure t
+       :config (global-pretty-mode t))
+   #+END_SRC
+
 
 * CODING
-** Php
 
-   php mode configuration
+** Php Mode
+
+   	php mode configuration
+
+   	#+BEGIN_SRC emacs-lisp
+      (use-package php-mode
+        :mode "\\.php\\'"
+        :interpreter "php"
+        :ensure t)
+   	#+END_SRC
+
+	Config indent
+
+	#+BEGIN_SRC emacs-lisp
+      (add-hook 'php-mode-hook 'my-php-mode-hook)
+      (add-hook 'php-mode-hook 'my-comment-multiline)
+      (defun my-php-mode-hook ()
+        (setq indent-tabs-mode t)
+        (let ((my-tab-width 4))
+          (setq tab-width my-tab-width)
+          (setq c-basic-indent my-tab-width)
+          (set (make-local-variable 'tab-stop-list)
+               (number-sequence my-tab-width 200 my-tab-width))))
+	#+END_SRC
+
+
+** Web Mode
+
+   Web Mode
 
    #+BEGIN_SRC emacs-lisp
-     (use-package php-mode
-       :mode "\\.php\\'"
-       :interpreter "php"
-       :ensure t)
+     (use-package web-mode
+       :mode "\\.html?\\'"
+       :defer t
+       :ensure t
+       :config
+       (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+       (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+       (add-to-list 'auto-mode-alist '("\\.jsp\\'" . web-mode))
+       (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+       (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+       (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+       (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+
+       (setq web-mode-engines-alist '(("php" . "\\.phtml\\'") ("blade" . "\\.blade\\.")) )
+       (setq web-mode-extra-auto-pairs '(("erb" . (("open" "close"))) ("php" . (("open" "close") ("open" "close"))) ))
+       (setq web-mode-enable-auto-pairing t)
+       (setq web-mode-enable-part-face t)
+       (setq web-mode-enable-css-colorization t)
+       (setq web-mode-enable-auto-pairing t))
    #+END_SRC
-
-   add flymake handler
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package flymake-phpcs
-       :ensure t)
-
-     (use-package flymake-php
-       :ensure t)
-   #+END_SRC
-
 
 
 * ORG
