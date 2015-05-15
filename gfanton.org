@@ -677,7 +677,6 @@
                (number-sequence my-tab-width 200 my-tab-width))))
 	#+END_SRC
 
-
 ** Web Mode
 
    Web Mode
@@ -704,6 +703,13 @@
        (setq web-mode-enable-auto-pairing t))
    #+END_SRC
 
+** Tail mode
+
+   Auto-mode-alist
+
+   #+BEGIN_SRC emacs-lisp
+     (add-to-list 'auto-mode-alist '("\\.log\\'" . auto-revert-mode))
+   #+END_SRC
 
 * ORG
 ** Souce Block
