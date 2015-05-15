@@ -363,9 +363,24 @@ Quote each argument seperately, join with spaces and call shell-command-to-strin
                                      64 68 72 76 80 84 88 92 96 100 104 108 112 116 120))
    #+END_SRC
 
+** Cedet
+
+   Init Semantic
+
+   #+BEGIN_SRC emacs-lisp
+      (semantic-mode 1)
+   #+END_SRC
+
 ** TODO Keychords
 
    Keychords Install
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package key-chord
+       :ensure t
+       :config
+       ())
+   #+END_SRC
 
 ** Flycheck
 
