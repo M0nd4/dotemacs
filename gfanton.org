@@ -197,6 +197,17 @@
         :config (winner-mode 1))
     #+END_SRC
 
+** Ace Jump
+
+   Install Ace Jump
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package ace-jump-mode
+       :ensure t
+       :config
+       (define-key global-map (kbd "C-'") 'ace-jump-mode))
+   #+END_SRC
+
 ** Imenus
 
    list all methods
@@ -272,7 +283,7 @@
          :config
          (helm-mode)
          (global-set-key (kbd "C-x a") 'helm-imenu)
-         (global-set-key (kbd "C-x C-b") 'helm-buffers-list))
+         (global-set-key (kbd "C-x b") 'helm-buffers-list))
    #+END_SRC
 
 ** History
@@ -491,6 +502,24 @@
        (add-hook 'magit-status-mode-hook 'magit-filenotify-mode))
    #+END_SRC
 
+** Impatient
+
+   Impatient Mode
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package impatient-mode
+       :ensure t)
+   #+END_SRC
+
+** Tweek
+*** lorem ipsem
+
+
+	#+BEGIN_SRC emacs-lisp
+      (use-package lorem-ipsum
+        :ensure t)
+	#+END_SRC
+
 
 
 * VISUAL
@@ -539,62 +568,62 @@
    tabbar mode (monokai style)
 
    #+BEGIN_SRC emacs-lisp
-	 (use-package tabbar
-	   :ensure t
-	   :config
-	   ;; set monoaki style tabbar
-	   (set-face-attribute
-		'tabbar-default nil
-		:background "gray20"
-		:foreground "gray20"
-		:box '(:line-width 1 :color "gray20" :style nil))
-	   (set-face-attribute
-		'tabbar-unselected nil
-		:background "gray30"
-		:foreground "white"
-		:box '(:line-width 1 :color "gray30" :style nil))
-	   (set-face-attribute
-		'tabbar-selected nil
-		:background "gray75"
-		:foreground "#A41F99"
-		:box '(:line-width 1 :color "gray75" :style nil))
-	   (set-face-attribute
-		'tabbar-highlight nil
-		:background "white"
-		:foreground "black"
-		:underline nil
-		:box '(:line-width 1 :color "white" :style nil))
-	   (set-face-attribute
-		'tabbar-button nil
-		:box '(:line-width 1 :color "gray20" :style nil))
-	   (set-face-attribute
-		'tabbar-separator nil
-		:background "grey20"
-		:height 0.1)
+     (use-package tabbar :disabled t
+       :ensure t
+       :config
+       ;; set monoaki style tabbar
+       (set-face-attribute
+        'tabbar-default nil
+        :background "gray20"
+        :foreground "gray20"
+        :box '(:line-width 1 :color "gray20" :style nil))
+       (set-face-attribute
+        'tabbar-unselected nil
+        :background "gray30"
+        :foreground "white"
+        :box '(:line-width 1 :color "gray30" :style nil))
+       (set-face-attribute
+        'tabbar-selected nil
+        :background "gray75"
+        :foreground "#A41F99"
+        :box '(:line-width 1 :color "gray75" :style nil))
+       (set-face-attribute
+        'tabbar-highlight nil
+        :background "white"
+        :foreground "black"
+        :underline nil
+        :box '(:line-width 1 :color "white" :style nil))
+       (set-face-attribute
+        'tabbar-button nil
+        :box '(:line-width 1 :color "gray20" :style nil))
+       (set-face-attribute
+        'tabbar-separator nil
+        :background "grey20"
+        :height 0.1)
 
-	   ;; Change padding of the tabs
-	   ;; we also need to set separator to avoid overlapping tabs by highlighted tabs
-	   (custom-set-variables
-		'(tabbar-separator (quote (1.0))))
+       ;; Change padding of the tabs
+       ;; we also need to set separator to avoid overlapping tabs by highlighted tabs
+       (custom-set-variables
+        '(tabbar-separator (quote (1.0))))
 
-	   ;; adding spaces
-	   (defun tabbar-buffer-tab-label (tab)
-		 "Return a label for TAB.
-	 That is, a string used to represent it on the tab bar."
-		 (let ((label  (if tabbar--buffer-show-groups
-						   (format " [%s] " (tabbar-tab-tabset tab))
-						 (format " %s " (tabbar-tab-value tab)))))
-		   ;; Unless the tab bar auto scrolls to keep the selected tab
-		   ;; visible, shorten the tab label to keep as many tabs as possible
-		   ;; in the visible area of the tab bar.
-		   (if tabbar-auto-scroll-flag
-			   label
-			 (tabbar-shorten
-			  label (max 1 (/ (window-width)
-							  (length (tabbar-view
-									   (tabbar-current-tabset)))))))))
+       ;; adding spaces
+       (defun tabbar-buffer-tab-label (tab)
+         "Return a label for TAB.
+     That is, a string used to represent it on the tab bar."
+         (let ((label  (if tabbar--buffer-show-groups
+                           (format " [%s] " (tabbar-tab-tabset tab))
+                         (format " %s " (tabbar-tab-value tab)))))
+           ;; Unless the tab bar auto scrolls to keep the selected tab
+           ;; visible, shorten the tab label to keep as many tabs as possible
+           ;; in the visible area of the tab bar.
+           (if tabbar-auto-scroll-flag
+               label
+             (tabbar-shorten
+              label (max 1 (/ (window-width)
+                              (length (tabbar-view
+                                       (tabbar-current-tabset)))))))))
 
-	   (tabbar-mode t))
+       (tabbar-mode t))
    #+END_SRC
 
    Switch between major mode with arrow
@@ -650,7 +679,14 @@
    #+END_SRC
 
 
-* CODING
+* GLOBAL MODE
+** Tail mode
+
+   Auto-mode-alist
+
+   #+BEGIN_SRC emacs-lisp
+     (add-to-list 'auto-mode-alist '("\\.log\\'" . auto-revert-mode))
+   #+END_SRC
 
 ** Php Mode
 
@@ -703,13 +739,15 @@
        (setq web-mode-enable-auto-pairing t))
    #+END_SRC
 
-** Tail mode
+** Js2 Mode
 
-   Auto-mode-alist
+   Js2 mode
 
    #+BEGIN_SRC emacs-lisp
-     (add-to-list 'auto-mode-alist '("\\.log\\'" . auto-revert-mode))
+     (use-package js2-mode
+       :ensure t)
    #+END_SRC
+
 
 * ORG
 ** Souce Block
