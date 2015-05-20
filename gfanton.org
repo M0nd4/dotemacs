@@ -496,7 +496,7 @@
      (setq ange-ftp-ftp-program-name "pftp")
    #+END_SRC
 
-** TODO Magit
+** Magit
 
    Git manager for emacs
 
@@ -549,7 +549,7 @@
      (use-package neotree
        :ensure t
        :config
-       (global-set-key [f8] 'neotree-toggle))
+       (global-set-key (kbd "C-c t") 'neotree-toggle))
    #+END_SRC
 
 ** Minimap
@@ -560,6 +560,8 @@
      (use-package minimap :disabled t
        :ensure t)
    #+END_SRC
+
+
 
 
 
@@ -604,7 +606,7 @@
 	 (set-face-attribute 'default nil :height 110)
    #+END_SRC
 
-** TODO Tabbar
+** Tabbar
 
    tabbar mode (monokai style)
 
@@ -705,10 +707,6 @@
 			 (volatile-highlights-mode t))
      #+END_SRC
 
-** Org Babel
-
-   color source block
-
 ** Pretty Mode
 
    Prettify Symbole
@@ -718,6 +716,7 @@
        :ensure t
        :config (global-pretty-mode t))
    #+END_SRC
+
 
 
 * GLOBAL MODE
@@ -790,14 +789,18 @@
   #+END_SRC
 
 
+
 * ORG
+** Org Babel
+
+   color source block
+
 ** Shift Select
 
    disable shift selection
    #+BEGIN_SRC emacs-listp
      (setq shift-select-mode nil)
    #+END_SRC
-
 
 ** Souce Block
 *** fontifaction
@@ -807,6 +810,7 @@
     #+BEGIN_SRC emacs-lisp
 ;;      (setq org-src-fontify-natively t)
     #+END_SRC
+
 
 
 * SPECIAL BINDING
