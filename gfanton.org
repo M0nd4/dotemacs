@@ -18,6 +18,13 @@
 
 
 * INTIALISATION
+
+** Dvorak Mode
+
+   #+BEGIN_SRC emacs-lisp
+     (global-set-key (kbd "C-z") ctl-x-map)
+   #+END_SRC
+
 ** Encodage
    Set =utf-8= as preferred coding system.
 
@@ -123,6 +130,20 @@
 
 
 * GLOBAL CONFIGURATION
+
+** Comment
+
+   Multine comment
+
+   #+BEGIN_SRC emacs-lisp
+     (defun my-comment-multiline ()
+       (set (make-local-variable 'comment-start) " /*")
+       (set (make-local-variable 'comment-padding) "*")
+       (set (make-local-variable 'comment-end) "*/")
+       (set (make-local-variable 'comment-style) 'indent))
+   #+END_SRC
+
+** TODO Buffer
 ** Functions
 
    execve
@@ -154,28 +175,13 @@
          (interactive "*")
          (uniquify-all-lines-region (point-min) (point-max)))
    #+END_SRC
-
-** Comment
-
-   Multine comment
-
-   #+BEGIN_SRC emacs-lisp
-     (defun my-comment-multiline ()
-       (set (make-local-variable 'comment-start) " /*")
-       (set (make-local-variable 'comment-padding) "*")
-       (set (make-local-variable 'comment-end) "*/")
-       (set (make-local-variable 'comment-style) 'indent))
-   #+END_SRC
-
-** TODO Buffer
 ** Alias
 
    yes or no -> y or n
 
    #+BEGIN_SRC emacs-lisp
-     (defalias 'yes-or-no-p 'y-or-n-p)
+	 (defalias 'yes-or-no-p 'y-or-n-p)
    #+END_SRC
-
 ** Undo - Redo
 *** undo-tree
 
@@ -196,7 +202,6 @@
         :defer t
         :config (winner-mode 1))
     #+END_SRC
-
 ** Ace Jump
 
    Install Ace Jump
@@ -206,18 +211,6 @@
        :ensure t
        :config
        (define-key global-map (kbd "C-'") 'ace-jump-mode))
-   #+END_SRC
-
-** Imenus
-
-   list all methods
-
-   #+BEGIN_SRC emacs-lisp
-     (use-package imenus
-       :defer t
-       :ensure t
-       :config
-       (global-set-key (kbd "C-x C-a") 'imenus))
    #+END_SRC
 
 ** Ido
@@ -270,6 +263,18 @@
 
      (provide 'ido-yes-or-no)
      ;;; ido-yes-or-no.el ends here
+   #+END_SRC
+
+** Imenus
+
+   list all methods
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package imenus
+       :defer t
+       :ensure t
+       :config
+       (global-set-key (kbd "C-x C-a") 'imenus))
    #+END_SRC
 
 ** Helm
@@ -450,9 +455,24 @@
      (c-set-offset 'substatement-open 0)   ;;; No indent for open bracket
    #+END_SRC
 
+** Cedet
+
+   Init Semantic
+
+   #+BEGIN_SRC emacs-lisp
+      (semantic-mode 1)
+   #+END_SRC
+
 ** TODO Keychords
 
    Keychords Install
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package key-chord
+       :ensure t
+       :config
+       ())
+   #+END_SRC
 
 ** Flycheck
 
@@ -468,7 +488,7 @@
          (setq flycheck-phpcs-standard "Prestashop")))
    #+END_SRC
 
-** TODO FTP
+** FTP
 
    Use ftp in passive
 
@@ -502,13 +522,13 @@
        (add-hook 'magit-status-mode-hook 'magit-filenotify-mode))
    #+END_SRC
 
-** Impatient
+** Win Move
 
-   Impatient Mode
+   WinMove lets you move point from window to window using Shift and the arrow keys.
 
    #+BEGIN_SRC emacs-lisp
-     (use-package impatient-mode
-       :ensure t)
+     (when (fboundp 'windmove-default-keybindings)
+       (windmove-default-keybindings))
    #+END_SRC
 
 ** Tweek
@@ -715,28 +735,28 @@
 
 ** Web Mode
 
-   Web Mode
+  Web Mode
 
-   #+BEGIN_SRC emacs-lisp
-     (use-package web-mode
-       :mode "\\.html?\\'"
-       :defer t
-       :ensure t
-       :config
-       (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
-       (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
-       (add-to-list 'auto-mode-alist '("\\.jsp\\'" . web-mode))
-       (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
-       (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
-       (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
-       (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+  #+BEGIN_SRC emacs-lisp
+	(use-package web-mode
+	  :mode "\\.html?\\'"
+	  :defer t
+	  :ensure t
+	  :config
+	  (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+	  (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+	  (add-to-list 'auto-mode-alist '("\\.jsp\\'" . web-mode))
+	  (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+	  (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+	  (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+	  (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
 
-       (setq web-mode-engines-alist '(("php" . "\\.phtml\\'") ("blade" . "\\.blade\\.")) )
-       (setq web-mode-extra-auto-pairs '(("erb" . (("open" "close"))) ("php" . (("open" "close") ("open" "close"))) ))
-       (setq web-mode-enable-auto-pairing t)
-       (setq web-mode-enable-part-face t)
-       (setq web-mode-enable-css-colorization t)
-       (setq web-mode-enable-auto-pairing t))
+	  (setq web-mode-engines-alist '(("php" . "\\.phtml\\'") ("blade" . "\\.blade\\.")) )
+	  (setq web-mode-extra-auto-pairs '(("erb" . (("open" "close"))) ("php" . (("open" "close") ("open" "close"))) ))
+	  (setq web-mode-enable-auto-pairing t)
+	  (setq web-mode-enable-part-face t)
+	  (setq web-mode-enable-css-colorization t)
+	  (setq web-mode-enable-auto-pairing t))
    #+END_SRC
 
 ** Js2 Mode
@@ -746,10 +766,19 @@
    #+BEGIN_SRC emacs-lisp
      (use-package js2-mode
        :ensure t)
-   #+END_SRC
+  #+END_SRC
 
 
 * ORG
+** Shift Select
+
+   disable shift selection
+   #+BEGIN_SRC emacs-listp
+     (setq shift-select-mode nil)
+   #+END_SRC
+
+
+
 ** Souce Block
 *** fontifaction
 
