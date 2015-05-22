@@ -531,6 +531,15 @@
        (windmove-default-keybindings))
    #+END_SRC
 
+   Make windmove work in org-mode
+
+   #+BEGIN_SRC emacs-lisp
+     (add-hook 'org-shiftup-final-hook 'windmove-up)
+     (add-hook 'org-shiftleft-final-hook 'windmove-left)
+     (add-hook 'org-shiftdown-final-hook 'windmove-down)
+     (add-hook 'org-shiftright-final-hook 'windmove-right)
+   #+END_SRC
+
 ** Tweek
 *** lorem ipsem
 
@@ -706,6 +715,19 @@
 			 :config
 			 (volatile-highlights-mode t))
      #+END_SRC
+
+*** line
+
+	Hightlight line
+
+	#+BEGIN_SRC emacs-lisp
+      (use-package hl-line+ :disabled t
+        :ensure t
+        :config
+        (toggle-hl-line-when-idle 1))
+
+ 	#+END_SRC
+
 
 ** Pretty Mode
 
