@@ -98,6 +98,9 @@
      #+END_SRC
 
 **** linux
+
+	 Clip Board
+
      #+BEGIN_SRC emacs-lisp
        (with-system 'gnu/linux
        (setq x-select-enable-clipboard t)
@@ -121,11 +124,22 @@
    :disable useless menu bar
 
    #+BEGIN_SRC emacs-lisp
-(when window-system
-  (tooltip-mode -1)
-  (tool-bar-mode -1)
-  (scroll-bar-mode -1))
-(menu-bar-mode -1)
+     (when window-system
+       (tooltip-mode -1)
+       (tool-bar-mode -1)
+       (scroll-bar-mode -1))
+     (menu-bar-mode -1)
+   #+END_SRC
+
+   i3 integration for linux
+
+   #+BEGIN_SRC emacs-lisp
+     (if (file-exists-p "~/.i3/config")
+         (progn
+           (global-set-key (kbd "C-c 3") 'make-frame)
+           (global-set-key (kbd "C-c 2") 'make-frame)
+           (global-set-key (kbd "C-c 0") 'delete-frame))
+           nil)
    #+END_SRC
 
 
@@ -572,6 +586,23 @@
 
 
 
+** String Inflection
+
+   cycling text between various styles (CamelCase, snake_case, lowerCamelCase, etc)
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package string-inflection
+       :ensure t)
+   #+END_SRC
+
+** Multi Term
+
+   Managing multiple terminal buffers in Emacs.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package multi-term :disabled
+       :ensure t)
+   #+END_SRC
 
 
 * VISUAL
@@ -590,14 +621,6 @@
         :ensure t
         :config (load-theme 'monokai t))
     #+END_SRC
-
-	Change default background
-
-	#+BEGIN_SRC emacs-lisp
-      (when (display-graphic-p)
-            (color-theme-install-frame-params
-              '((background-color . "#161711"))))
-	#+END_SRC
 
 ** Font
 
