@@ -576,7 +576,6 @@
    #+END_SRC
 
 
-
 ** String Inflection
 
    cycling text between various styles (CamelCase, snake_case, lowerCamelCase, etc)
@@ -586,12 +585,21 @@
        :ensure t)
    #+END_SRC
 
-** Multi Term
+** TODO Multi Term
 
    Managing multiple terminal buffers in Emacs.
 
    #+BEGIN_SRC emacs-lisp
      (use-package multi-term :disabled
+       :ensure t)
+   #+END_SRC
+
+** Dired
+
+   Enchance dired with dired+
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package dired+
        :ensure t)
    #+END_SRC
 
