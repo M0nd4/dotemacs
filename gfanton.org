@@ -306,6 +306,15 @@
          (global-set-key (kbd "C-x b") 'helm-buffers-list))
    #+END_SRC
 
+*** helm-projectile
+
+	helm for projectile
+
+	#+BEGIN_SRC emacs-lisp
+      (use-package helm-projectile
+        :ensure t)
+	#+END_SRC
+
 ** History
 
    save history
@@ -624,7 +633,13 @@
 
    #+BEGIN_SRC emacs-lisp
      (use-package projectile
-       :ensure t)
+       :ensure t
+       :defer t
+       :init
+       (setq projectile-indexing-method 'native)
+       (setq projectile-enable-caching t)
+       :config
+       (projectile-global-mode))
    #+END_SRC
 
 
@@ -865,6 +880,7 @@
 ** Shift Select
 
    disable shift selection
+
    #+BEGIN_SRC emacs-listp
      (setq shift-select-mode nil)
    #+END_SRC
