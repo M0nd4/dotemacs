@@ -189,6 +189,7 @@
          (interactive "*")
          (uniquify-all-lines-region (point-min) (point-max)))
    #+END_SRC
+
 ** Alias
 
    yes or no -> y or n
@@ -410,7 +411,10 @@
        :ensure t
        :init
        (setq yas-snippet-dirs "~/.emacs.d/snippets") ;; not really need - default yas folder
-       (yas-global-mode 1))
+       (yas-global-mode 1)
+       :config
+       (add-hook 'term-mode-hook (lambda()
+                                   (setq yas-dont-activate t))))
    #+END_SRC
 
 ** Regexp
@@ -806,6 +810,26 @@
           (set (make-local-variable 'tab-stop-list)
                (number-sequence my-tab-width 200 my-tab-width))))
 	#+END_SRC
+
+	Underscrore Var
+
+	#+BEGIN_SRC emacs-lisp
+      (defun underscore-variable (string &optional from to)
+        "underscore var"
+        (interactive
+         (if (use-region-p)
+             (list nil (region-beginning) (region-end))
+           (let ((bds (bounds-of-thing-at-point 'paragraph)) )
+             (list nil (car bds) (cdr bds)))))
+
+        (while (re-search-forward "\\(>\\|\\$\\(?:this->\\)?\\)\\([-_[:alnum:]]+?\\)\\([^(_[:alnum:]]\\)" nil t)
+          (replace-match
+           (concat (match-string 1)
+                   (string-inflection-underscore-function (match-string 2))
+                   (match-string 3)) nil nil)))
+
+	#+END_SRC
+
 
 ** Web Mode
 
