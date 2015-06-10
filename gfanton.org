@@ -133,6 +133,19 @@
 
 * GLOBAL CONFIGURATION
 
+** AutoPair
+
+   electric mode
+
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package autopair
+       :ensure t
+       :config
+       (autopair-global-mode))
+   #+END_SRC
+
+
 ** Comment
 
    Multine comment
@@ -940,6 +953,7 @@
        (autoload 'js2-mode "js2" nil t)
        (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode)))
    #+END_SRC
+
 
 * ORG
 ** TODO Org Babel
