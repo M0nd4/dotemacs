@@ -39,6 +39,7 @@
 
     #+BEGIN_SRC emacs-lisp
       (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+      (add-to-list 'package-archives '("SC" . "http://joseito.republika.pl/sunrise-commander/") t)
       (unless (assoc-default "melpa" package-archives)
         (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t))
     #+END_SRC
@@ -139,12 +140,11 @@
 
 
    #+BEGIN_SRC emacs-lisp
-     (use-package autopair
+     (use-package autopair :disabled t
        :ensure t
        :config
        (autopair-global-mode))
    #+END_SRC
-
 
 ** Comment
 
@@ -691,6 +691,41 @@
      ;;     (menu-bar-mode -1)
      ;;     (scroll-bar-mode -1)
      ;;     (delete-other-windows)))
+   #+END_SRC
+
+** Sunrise
+
+   Sunrise commander file explorer
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package sunrise-commander
+       :ensure t
+       :config
+       (global-set-key (kbd "C-c f") 'sunrise))
+   #+END_SRC
+
+** TODO Rudel
+
+   Collaborative editing
+
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package rudel :disabled t
+       :ensure t
+       :config
+       (global-rudel-minor-mode 1))
+   #+END_SRC
+
+** e2wm
+
+   windows manager for emacs
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package e2wm
+       :ensure t
+       :config
+       (autoload 'e2wm:dp-edbi "e2wm-edbi" nil t)
+       (global-set-key (kbd "M-e") 'e2wm:dp-edbi))
    #+END_SRC
 
 
