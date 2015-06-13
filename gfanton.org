@@ -454,7 +454,7 @@
 
 *** pcre
 
-   	I prefere to use PCRE instead of emacs regex engine
+   	I prefere to use PCRE Instead of emacs regex engine
 
    	#+BEGIN_SRC emacs-lisp
       (use-package pcre2el
