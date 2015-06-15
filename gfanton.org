@@ -127,7 +127,7 @@
    #+BEGIN_SRC emacs-lisp
      (tooltip-mode -1)
      (tool-bar-mode -1)
-
+     (scroll-bar-mode -1)
      (menu-bar-mode -1)
    #+END_SRC
 
@@ -725,8 +725,33 @@
        :ensure t
        :config
        (autoload 'e2wm:dp-edbi "e2wm-edbi" nil t)
-       (global-set-key (kbd "M-e") 'e2wm:dp-edbi))
+       (global-set-key (kbd "M-e") 'e2wm:dp-edbi)
+       (global-set-key (kbd "C-c ; ;") 'e2wm:start-management))
    #+END_SRC
+
+   e2wm direx
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package e2wm-direx
+       :ensure t
+       :config
+       (setq e2wm:c-code-recipe
+             '(| (:left-max-size 40)
+                 (- (:upper-size-ratio 0.6)
+                    tree history)
+                 (- (:lower-max-size 150)
+                    (| (:right-max-size 40)
+                       main imenu)
+                    sub)))
+
+       (setq e2wm:c-code-winfo
+             '((:name main)
+               (:name tree    :plugin direx)
+               (:name history :plugin history-list)
+               (:name imenu   :plugin imenu :default-hide nil)
+               (:name sub     :buffer "*info*" :default-hide t))))
+   #+END_SRC
+
 
 
 * VISUAL
