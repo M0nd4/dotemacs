@@ -454,7 +454,7 @@
 
 *** pcre
 
-   	I prefere to use PCRE instead of emacs regex engine
+   	I prefere to use PCRE Instead of emacs regex engine
 
    	#+BEGIN_SRC emacs-lisp
       (use-package pcre2el
@@ -716,7 +716,7 @@
        (global-rudel-minor-mode 1))
    #+END_SRC
 
-** e2wm
+** E2wm
 
    windows manager for emacs
 
@@ -725,7 +725,6 @@
        :ensure t
        :config
        (autoload 'e2wm:dp-edbi "e2wm-edbi" nil t)
-       (global-set-key (kbd "M-e") 'e2wm:dp-edbi)
        (global-set-key (kbd "C-c ; ;") 'e2wm:start-management))
    #+END_SRC
 
@@ -752,6 +751,15 @@
                (:name sub     :buffer "*info*" :default-hide t))))
    #+END_SRC
 
+
+** Spray
+
+   Fast reading
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package spray
+       :ensure t)
+   #+END_SRC
 
 
 * VISUAL
