@@ -3,6 +3,7 @@
 #+BABEL: :cache yes
 #+LATEX_HEADER: \usepackage{parskip}
 #+LATEX_HEADER: \usepackage{inconsolata}
+#+STARTUP: indent
 #+PROPERTY: header-args :tangle yes :comments org
 
 *** .emacs
@@ -126,8 +127,10 @@
 
    #+BEGIN_SRC emacs-lisp
      (tooltip-mode -1)
-     (tool-bar-mode -1)
-     (scroll-bar-mode -1)
+     (when (display-graphic-p)
+       (progn
+         (tool-bar-mode -1)
+         (scroll-bar-mode -1)))
      (menu-bar-mode -1)
    #+END_SRC
 
@@ -214,12 +217,14 @@
     #+END_SRC
 
 *** winner-mode
+
     #+BEGIN_SRC emacs-lisp
       (use-package winner
         :ensure t
         :defer t
         :config (winner-mode 1))
     #+END_SRC
+
 ** Ace Jump
 
    Install Ace Jump
