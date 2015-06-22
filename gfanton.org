@@ -100,12 +100,22 @@
 
 **** linux
 
-	 Clipboard
+     Clipboard
 
      #+BEGIN_SRC emacs-lisp
-       (with-system 'gnu/linux
-       (setq x-select-enable-clipboard t)
-       (setq interprogram-paste-function 'x-cut-buffer-or-selection-value))
+       (with-system 'gnu/linux (progn
+                                 (setq x-select-enable-clipboard t)
+                                 (defun xsel-cut-function (text &optional push)
+                                   (with-temp-buffer
+                                     (insert text)
+                                     (call-process-region (point-min) (point-max) "xsel" nil 0 nil "--clipboard" "--input")))
+                                 (defun xsel-paste-function()
+
+                                   (let ((xsel-output (shell-command-to-string "xsel --clipboard --output")))
+                                     (unless (string= (car kill-ring) xsel-output)
+                                       xsel-output )))
+                                 (setq interprogram-cut-function 'xsel-cut-function)
+                                 (setq interprogram-paste-function 'xsel-paste-function)))
      #+END_SRC
 
 ** Load Files
@@ -503,7 +513,7 @@
       (semantic-mode 1)
    #+END_SRC
 
-** TODO Keychords
+** Keychords
 
    Keychords Install
 
@@ -511,7 +521,12 @@
      (use-package key-chord
        :ensure t
        :config
-       ())
+       (progn
+         (key-chord-mode 1)
+         (key-chord-define-global ",L" 'linum-mode)
+         (key-chord-define-global ",G" 'git-gutter-mode)
+         (key-chord-define-global ",F" 'flycheck-mode)
+         (key-chord-define-global ",C" 'company-mode)))
    #+END_SRC
 
 ** Flycheck
@@ -519,7 +534,7 @@
    flycheck global configuration
 
    #+BEGIN_SRC emacs-lisp
-     (use-package flycheck
+    (use-package flycheck
        :ensure t
        :config
        (progn
@@ -562,6 +577,15 @@
        (add-hook 'magit-status-mode-hook 'magit-filenotify-mode))
    #+END_SRC
 
+   Pull request
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package magit-gh-pulls
+       :ensure t
+       :config (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls))
+   #+END_SRC
+
+
 ** Win Move
 
    WinMove lets you move point from window to window using Shift and the arrow keys.
@@ -588,7 +612,6 @@
      (use-package git-gutter
        :ensure t
        :config
-       (global-git-gutter-mode t)
        (custom-set-variables
         '(git-gutter:separator-sign " "))
        (set-face-foreground 'git-gutter:separator "black"))
@@ -1084,6 +1107,15 @@
      (global-set-key (kbd "C-x <down>") 'forward-sexp)
      (global-set-key (kbd "C-x <up>") 'backward-sexp)
    #+END_SRC
+
+   Forward paragraph
+
+
+   #+BEGIN_SRC emacs-lisp
+     (global-set-key (kbd "M-e") 'forward-paragraph)
+     (global-set-key (kbd "M-a") 'backward-paragraph)
+   #+END_SRC
+
 
 ** New Line
 
