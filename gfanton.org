@@ -195,6 +195,36 @@
          (uniquify-all-lines-region (point-min) (point-max)))
    #+END_SRC
 
+   Toggle Window Split
+
+   #+BEGIN_SRC emacs-lisp
+     (defun toggle-window-split ()
+       (interactive)
+       (if (= (count-windows) 2)
+           (let* ((this-win-buffer (window-buffer))
+                  (next-win-buffer (window-buffer (next-window)))
+                  (this-win-edges (window-edges (selected-window)))
+                  (next-win-edges (window-edges (next-window)))
+                  (this-win-2nd (not (and (<= (car this-win-edges)
+                                              (car next-win-edges))
+                                          (<= (cadr this-win-edges)
+                                              (cadr next-win-edges)))))
+                  (splitter
+                   (if (= (car this-win-edges)
+                          (car (window-edges (next-window))))
+                       'split-window-horizontally
+                     'split-window-vertically)))
+             (delete-other-windows)
+             (let ((first-win (selected-window)))
+               (funcall splitter)
+               (if this-win-2nd (other-window 1))
+               (set-window-buffer (selected-window) this-win-buffer)
+               (set-window-buffer (next-window) next-win-buffer)
+               (select-window first-win)
+               (if this-win-2nd (other-window 1))))))
+   #+END_SRC
+
+
 ** Alias
 
    yes or no -> y or n
@@ -502,11 +532,11 @@
 
 ** Cedet
 
-   Init Semantic
+Init Semantic
 
-   #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
       (semantic-mode 1)
-   #+END_SRC
+#+END_SRC
 
 ** TODO Keychords
 
@@ -770,27 +800,38 @@
    browse with conkeror
 
    #+BEGIN_SRC emacs-lisp
-     (custom-set-variables
-      '(browse-url-browser-function (quote browse-url-conkeror)))
+     ;; (custom-set-variables
+     ;;  '(browse-url-browser-function (quote browse-url-conkeror)))
    #+END_SRC
 
 
 * VISUAL
 ** Color Theme
 
-    Init color-theme
-
-    #+BEGIN_SRC emacs-lisp
-      (use-package monokai-theme :ensure t)
-    #+END_SRC
-
-	Set monokai Theme
+	init Color Theme
 
     #+BEGIN_SRC emacs-lisp
       (use-package color-theme
-        :ensure t
-        :config (load-theme 'monokai t))
+        :ensure t)
     #+END_SRC
+
+** Themes
+*** Monokai
+
+#+BEGIN_SRC emacs-lisp
+  (use-package monokai-theme :disabled t
+    :ensure t)
+#+END_SRC
+
+*** Material
+
+#+BEGIN_SRC emacs-lisp
+  (use-package material-theme
+    :ensure t
+    :init
+    (load-theme 'material t))
+#+END_SRC
+
 
 ** Font
 
@@ -1115,3 +1156,8 @@
    #+BEGIN_SRC emacs-lisp
      (global-set-key (kbd "M-g") 'goto-line)
    #+END_SRC
+** toogle vertical split
+
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-x |") 'toggle-window-split)
+#+END_SRC
