@@ -137,10 +137,11 @@
 
    #+BEGIN_SRC emacs-lisp
      (tooltip-mode -1)
-     (when (display-graphic-p)
-       (progn
-         (tool-bar-mode -1)
-         (scroll-bar-mode -1)))
+     ;; (when (display-graphic-p)
+     ;;   (progn
+     (tool-bar-mode -1)
+     (scroll-bar-mode -1))
+                                             ;)
      (menu-bar-mode -1)
    #+END_SRC
 
@@ -234,7 +235,6 @@
                (if this-win-2nd (other-window 1))))))
    #+END_SRC
 
-
 ** Alias
 
    yes or no -> y or n
@@ -265,7 +265,8 @@
         :config (winner-mode 1))
     #+END_SRC
 
-** Ace Jump
+** Ace
+*** ace jump
 
    Install Ace Jump
 
@@ -274,6 +275,17 @@
        :ensure t
        :config
        (define-key global-map (kbd "C-'") 'ace-jump-mode))
+   #+END_SRC
+
+*** ace window
+
+   Install Ace Window
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package ace-window
+       :ensure t
+       :init
+       (define-key global-map (kbd "M-p") 'ace-window))
    #+END_SRC
 
 ** Ido
@@ -483,6 +495,16 @@
        (yas-global-mode 1))
    #+END_SRC
 
+** Conkeror
+
+Set conkeror as default web browser
+
+#+BEGIN_SRC emacs-lisp
+  (setq browse-url-generic-program (executable-find "conkeror"))
+  (setq browse-url-browser-function 'browse-url-generic)
+#+END_SRC
+
+
 ** Regexp
 *** visual regexp
 
@@ -558,10 +580,10 @@ Init Semantic
        :config
        (progn
          (key-chord-mode 1)
-         (key-chord-define-global ",L" 'linum-mode)
-         (key-chord-define-global ",G" 'git-gutter-mode)
-         (key-chord-define-global ",F" 'flycheck-mode)
-         (key-chord-define-global ",C" 'company-mode)))
+         (key-chord-define-global "KL" 'linum-mode)
+         (key-chord-define-global "FG" 'git-gutter-mode)
+         (key-chord-define-global "DF" 'flycheck-mode)
+         (key-chord-define-global "XC" 'company-mode)))
    #+END_SRC
 
 ** Flycheck
@@ -953,6 +975,7 @@ Init Semantic
 (nyan-mode t)
 (nyan-start-animation))
     #+END_SRC
+
 ** Powerline
    #+BEGIN_SRC emacs-lisp
 	 (use-package powerline
@@ -1135,11 +1158,11 @@ Init Semantic
 ** Souce Block
 *** fontifaction
 
-    =not working=
+=not working=
 
-    #+BEGIN_SRC emacs-lisp
-;;      (setq org-src-fontify-natively t)
-    #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  ;;(setq org-src-fontify-natively t)
+#+END_SRC
 
 
 
@@ -1162,7 +1185,6 @@ Init Semantic
      (global-set-key (kbd "M-a") 'backward-paragraph)
    #+END_SRC
 
-
 ** New Line
 
    always indent on new line
@@ -1183,11 +1205,12 @@ Init Semantic
 
 ** Go To Line
 
-   Go to line
+Go to line
 
-   #+BEGIN_SRC emacs-lisp
-     (global-set-key (kbd "M-g") 'goto-line)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "M-g") 'goto-line)
+#+END_SRC
+
 ** toogle vertical split
 
 #+BEGIN_SRC emacs-lisp
