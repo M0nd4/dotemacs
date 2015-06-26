@@ -1,3 +1,4 @@
+
 #+TITLE: Emacs configuration file
 #+AUTHOR: gfatnon
 #+BABEL: :cache yes
@@ -39,10 +40,12 @@
     add repo
 
     #+BEGIN_SRC emacs-lisp
-      (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+      ession(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
       (add-to-list 'package-archives '("SC" . "http://joseito.republika.pl/sunrise-commander/") t)
+      (add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/") t)
       (unless (assoc-default "melpa" package-archives)
-        (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t))
+        (progn
+          (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)))
     #+END_SRC
 
     refresh on first init
@@ -136,17 +139,26 @@
    :disable useless menu bar
 
    #+BEGIN_SRC emacs-lisp
-     (tooltip-mode -1)
-     ;; (when (display-graphic-p)
-     ;;   (progn
-     (tool-bar-mode -1)
-     (scroll-bar-mode -1))
-                                             ;)
-     (menu-bar-mode -1)
+      (menu-bar-mode -1)
+       (when (fboundp 'tool-bar-mode)
+         (tool-bar-mode -1))
+       (when (fboundp 'scroll-bar-mode)
+         (scroll-bar-mode -1))
    #+END_SRC
 
 
 * GLOBAL CONFIGURATION
+
+** Achivement
+
+add achivement manager
+
+#+BEGIN_SRC emacs-lisp
+  (use-package achievements
+    :ensure t
+    :init
+    (achievements-mode))
+#+END_SRC
 
 ** AutoPair
 
@@ -249,7 +261,7 @@
     #+BEGIN_SRC emacs-lisp
       (use-package undo-tree
         :ensure t
-        :config
+        :init
         (global-undo-tree-mode)
         (setq undo-tree-visualizer-timestamps t)
         (setq undo-tree-visualizer-diff t)
@@ -285,7 +297,7 @@
      (use-package ace-window
        :ensure t
        :init
-       (define-key global-map (kbd "M-p") 'ace-window))
+       (define-key global-map (kbd "M-n") 'ace-window))
    #+END_SRC
 
 ** Ido
@@ -474,7 +486,7 @@
                      (delete-char trailnewlines)))))))
    #+END_SRC
 
-** Auto-Complete
+** Company
 
    #+BEGIN_SRC emacs-lisp
      (use-package company
@@ -503,7 +515,6 @@ Set conkeror as default web browser
   (setq browse-url-generic-program (executable-find "conkeror"))
   (setq browse-url-browser-function 'browse-url-generic)
 #+END_SRC
-
 
 ** Regexp
 *** visual regexp
@@ -583,7 +594,8 @@ Init Semantic
          (key-chord-define-global "KL" 'linum-mode)
          (key-chord-define-global "FG" 'git-gutter-mode)
          (key-chord-define-global "DF" 'flycheck-mode)
-         (key-chord-define-global "XC" 'company-mode)))
+         (key-chord-define-global "XC" 'company-mode)
+         (key-chord-define-global ",," 'company-other-backend)))
    #+END_SRC
 
 ** Flycheck
@@ -641,7 +653,6 @@ Init Semantic
        :ensure t
        :config (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls))
    #+END_SRC
-
 
 ** Win Move
 
@@ -788,7 +799,6 @@ Init Semantic
 
    Collaborative editing
 
-
    #+BEGIN_SRC emacs-lisp
      (use-package rudel :disabled t
        :ensure t
@@ -877,6 +887,14 @@ Init Semantic
         (load-theme 'material t))
 	#+END_SRC
 
+*** Solarized
+
+	#+BEGIN_SRC emacs-lisp
+      (use-package solarized-theme :disabled
+       :ensure t
+       :config
+       (load-theme 'solarized t))
+	#+END_SRC
 
 ** Font
 
@@ -977,11 +995,16 @@ Init Semantic
     #+END_SRC
 
 ** Powerline
+
+Powerline-vim port for emacs
+
    #+BEGIN_SRC emacs-lisp
-	 (use-package powerline
-				  :ensure t
-				  :config
-				  (powerline-default-theme))
+     (use-package powerline
+       :ensure t
+       :defer t
+       :init
+       (progn
+         (powerline-default-theme)))
    #+END_SRC
 
 ** Hightlights
@@ -1032,6 +1055,15 @@ Init Semantic
 
 
 * GLOBAL MODE
+** Impatient Mode
+
+Serve buffers live over HTTP
+
+#+BEGIN_SRC emacs-lisp
+  (use-package impatient-mode
+    :ensure t)
+#+END_SRC
+
 ** Tail Mode
 
    Auto-mode-alist
@@ -1042,32 +1074,29 @@ Init Semantic
 
 ** Php Mode
 
-   	php mode configuration
+php mode configuration
 
-   	#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
       (use-package php-mode
         :mode "\\.php\\'"
         :interpreter "php"
         :ensure t)
-   	#+END_SRC
+#+END_SRC
 
-	Config indent
+Config indent
 
-	#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
       (add-hook 'php-mode-hook 'my-php-mode-hook)
-      (add-hook 'php-mode-hook 'my-comment-multiline)
       (defun my-php-mode-hook ()
         (setq indent-tabs-mode t)
-        (let ((my-tab-width 4))
+        (let (my-tab-width 4)
           (setq tab-width my-tab-width)
-          (setq c-basic-indent my-tab-width)
-          (set (make-local-variable 'tab-stop-list)
-               (number-sequence my-tab-width 200 my-tab-width))))
-	#+END_SRC
+          (setq c-basic-indent my-tab-width)))
+#+END_SRC
 
-	Underscrore Var
+Underscrore Var
 
-	#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
       (defun underscore-variable (string &optional from to)
         "underscore var"
         (interactive
@@ -1082,7 +1111,16 @@ Init Semantic
                    (string-inflection-underscore-function (match-string 2))
                    (match-string 3)) nil nil)))
 
-	#+END_SRC
+#+END_SRC
+
+Hanlde Company Mode
+
+
+#+BEGIN_SRC emacs-lisp
+  (use-package php-extras
+    :ensure t)
+#+END_SRC
+
 
 ** Web Mode
 
@@ -1118,8 +1156,10 @@ Init Semantic
      (use-package js2-mode
        :ensure t
        :config
-       (autoload 'js2-mode "js2" nil t)
-       (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode)))
+       (progn
+         (autoload 'js2-mode "js2" nil t)
+         (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+         (js2-imenu-extras-mode)))
    #+END_SRC
 
 ** Csv-mode
@@ -1181,8 +1221,8 @@ Init Semantic
 
 
    #+BEGIN_SRC emacs-lisp
-     (global-set-key (kbd "M-e") 'forward-paragraph)
-     (global-set-key (kbd "M-a") 'backward-paragraph)
+     (global-set-key (kbd "C-M-n") 'forward-paragraph)
+     (global-set-key (kbd "C-M-p") 'backward-paragraph)
    #+END_SRC
 
 ** New Line
@@ -1212,6 +1252,8 @@ Go to line
 #+END_SRC
 
 ** toogle vertical split
+
+toogle vertical split macro
 
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-x |") 'toggle-window-split)
