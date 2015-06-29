@@ -486,6 +486,15 @@ add achivement manager
                      (delete-char trailnewlines)))))))
    #+END_SRC
 
+** Pos-Tip
+
+Show tooltip at point
+
+#+BEGIN_SRC emacs-lisp
+  (use-package pos-tip
+    :ensure t)
+#+END_SRC
+
 ** Company
 
    #+BEGIN_SRC emacs-lisp
@@ -494,6 +503,16 @@ add achivement manager
        :config
        (add-hook 'prog-mode-hook 'company-mode))
    #+END_SRC
+
+Popup documentation for completion candidates
+
+#+BEGIN_SRC emacs-lisp
+  (use-package company-quickhelp
+    :ensure t
+    :init
+    (company-quickhelp-mode 1))
+#+END_SRC
+
 
 ** Snippets
 
@@ -560,6 +579,16 @@ Set conkeror as default web browser
      (use-package edbi
        :ensure t)
    #+END_SRC
+
+Handle company mode
+
+#+BEGIN_SRC emacs-lisp
+  (use-package company-edbi
+    :ensure t
+    :init
+    (add-to-list 'company-backends 'company-edbi))
+#+END_SRC
+
 
 ** Indent
 
@@ -649,7 +678,7 @@ Init Semantic
    Pull request
 
    #+BEGIN_SRC emacs-lisp
-     (use-package magit-gh-pulls
+     (use-package magit-gh-pulls :disabled
        :ensure t
        :config (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls))
    #+END_SRC
