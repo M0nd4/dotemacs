@@ -1,4 +1,3 @@
-
 #+TITLE: Emacs configuration file
 #+AUTHOR: gfatnon
 #+BABEL: :cache yes
@@ -172,7 +171,7 @@ add achivement manager
        (autopair-global-mode))
    #+END_SRC
 
-** Comment
+** TODO Comment
 
    Multine comment
 
@@ -184,6 +183,19 @@ add achivement manager
        (set (make-local-variable 'comment-style) 'indent)
        (setq comment-use-syntax t))
    #+END_SRC
+
+** Tags
+
+Exuberant Ctags utilities for Emacs
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ctags
+    :ensure t
+    :init
+    (setq tags-revert-without-query t)
+    :config
+    (global-set-key (kbd "<f7>") 'ctags-create-or-update-tags-table))
+#+END_SRC
 
 ** TODO Buffer
 ** Functions
@@ -903,7 +915,7 @@ Init Semantic
 *** Monokai
 
 	#+BEGIN_SRC emacs-lisp
-      (use-package monokai-theme :disabled t
+      (use-package monokai-theme
         :ensure t)
 	#+END_SRC
 
@@ -911,19 +923,30 @@ Init Semantic
 
 	#+BEGIN_SRC emacs-lisp
       (use-package material-theme
-        :ensure t
-        :init
-        (load-theme 'material t))
+        :ensure t)
 	#+END_SRC
+
+*** Spacemacs
+
+#+BEGIN_SRC emacs-lisp
+  (use-package spacemacs-theme
+    :ensure t
+    :init
+    (load-theme 'spacemacs-dark t))
+#+END_SRC
 
 *** Solarized
 
-	#+BEGIN_SRC emacs-lisp
-      (use-package solarized-theme :disabled
-       :ensure t
-       :config
-       (load-theme 'solarized t))
-	#+END_SRC
+#+BEGIN_SRC emacs-lisp
+      (use-package solarized-theme
+       :ensure t)
+#+END_SRC
+
+*** load theme
+
+#+BEGIN_SRC emacs-lisp
+(load-theme 'monokai t)
+#+END_SRC
 
 ** Font
 
@@ -1056,8 +1079,8 @@ Powerline-vim port for emacs
       (use-package hl-line+ :disabled t
         :ensure t
         :config
+        (global-hl-line-mode)
         (toggle-hl-line-when-idle 1))
-
  	#+END_SRC
 
 ** Pretty Mode
@@ -1144,12 +1167,10 @@ Underscrore Var
 
 Hanlde Company Mode
 
-
 #+BEGIN_SRC emacs-lisp
   (use-package php-extras
     :ensure t)
 #+END_SRC
-
 
 ** Web Mode
 
