@@ -396,8 +396,8 @@ Exuberant Ctags utilities for Emacs
 	helm for projectile
 
 	#+BEGIN_SRC emacs-lisp
-      (use-package helm-projectile
-        :ensure t)
+      ;; (use-package helm-projectile
+      ;;   :ensure t)
 	#+END_SRC
 
 *** helm-google
@@ -519,12 +519,11 @@ Show tooltip at point
 Popup documentation for completion candidates
 
 #+BEGIN_SRC emacs-lisp
-  (use-package company-quickhelp
+  (use-package company-quickhelp :disabled
     :ensure t
     :init
-    (company-quickhelp-mode 1))
+    (company-quickhelp-mode nil))
 #+END_SRC
-
 
 ** Snippets
 
@@ -1088,9 +1087,11 @@ Powerline-vim port for emacs
    Prettify Symbole
 
    #+BEGIN_SRC emacs-lisp
-     (use-package pretty-mode :disabled t
+     (use-package pretty-symbols
        :ensure t
-       :config (global-pretty-mode t))
+       :config
+       (font-lock-mode)
+       (global-prettify-symbols-mode))
    #+END_SRC
 
 ** Color Identifier
@@ -1244,6 +1245,18 @@ Hanlde Company Mode
    #+BEGIN_SRC emacs-lisp
      (setq shift-select-mode nil)
    #+END_SRC
+
+** Tiny
+
+Quickly generate linear ranges in Emacs
+
+#+BEGIN_SRC emacs-lisp
+  (use-package tiny
+    :ensure t
+    :config
+    (global-set-key (kbd "C-;") 'tiny-expand))
+#+END_SRC
+
 
 ** Souce Block
 *** fontifaction
