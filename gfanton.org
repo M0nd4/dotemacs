@@ -396,8 +396,8 @@ Exuberant Ctags utilities for Emacs
 	helm for projectile
 
 	#+BEGIN_SRC emacs-lisp
-      ;; (use-package helm-projectile
-      ;;   :ensure t)
+      (use-package helm-projectile :disabled
+        :ensure t)
 	#+END_SRC
 
 *** helm-google
