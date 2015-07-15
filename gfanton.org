@@ -137,8 +137,8 @@ Clipboard
 
 ** Windows
 
-   Im not on emacs to use the mouse
-   :disable useless menu bar
+Im not on emacs to use the mouse
+:disable useless menu bar
 
    #+BEGIN_SRC emacs-lisp
       (menu-bar-mode -1)
@@ -148,6 +148,11 @@ Clipboard
          (scroll-bar-mode -1))
    #+END_SRC
 
+Use Dialog Box
+
+#+BEGIN_SRC emacs-lisp
+  (setq use-dialog-box nil)
+#+END_SRC
 
 * GLOBAL CONFIGURATION
 
@@ -1247,7 +1252,7 @@ Hanlde Company Mode
    #+END_SRC
 
 ** C/C++ mode
-**** Campany
+*** Campany
 
 Company backend support
 
@@ -1256,7 +1261,7 @@ Company backend support
     :ensure t)
 #+END_SRC
 
-**** Disaster
+*** Disaster
 
 Disassemble C/C++ code under cursor in Emacs
 
