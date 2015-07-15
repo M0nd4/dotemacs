@@ -1246,28 +1246,31 @@ Hanlde Company Mode
      (setq shift-select-mode nil)
    #+END_SRC
 
-** Tiny
-
-Quickly generate linear ranges in Emacs
-
-#+BEGIN_SRC emacs-lisp
-  (use-package tiny
-    :ensure t
-    :config
-    (global-set-key (kbd "C-;") 'tiny-expand))
-#+END_SRC
-
-
 ** Souce Block
 *** fontifaction
 
 =not working=
 
 #+BEGIN_SRC emacs-lisp
-  ;;(setq org-src-fontify-natively t)
+  ;; (setq org-src-fontify-natively t)
 #+END_SRC
 
+** Password Manager
 
+Minimal password manager for Emacs Org Mode.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package org-password-manager
+    :ensure t)
+
+#+END_SRC
+
+Password generator for humans. Good, Bad, Phonetic passwords included.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package password-generator
+    :ensure t)
+#+END_SRC
 
 
 * SPECIAL BINDING
