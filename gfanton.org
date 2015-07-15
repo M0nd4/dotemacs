@@ -3,6 +3,9 @@
 #+BABEL: :cache yes
 #+LATEX_HEADER: \usepackage{parskip}
 #+LATEX_HEADER: \usepackage{inconsolata}
+#+LaTeX_HEADER: \usepackage{minted}
+#+LaTeX_HEADER: \usemintedstyle{emacs}
+#+LaTeX_HEADER: \newminted{common-lisp}{fontsize=\footnotesize}
 #+STARTUP: indent
 #+PROPERTY: header-args :tangle yes :comments org
 
@@ -103,7 +106,7 @@
 
 **** linux
 
-     Clipboard
+Clipboard
 
      #+BEGIN_SRC emacs-lisp
        (with-system 'gnu/linux (progn
@@ -171,7 +174,7 @@ add achivement manager
        (autopair-global-mode))
    #+END_SRC
 
-** TODO Comment
+** Comment
 
    Multine comment
 
@@ -197,7 +200,7 @@ Exuberant Ctags utilities for Emacs
     (global-set-key (kbd "<f7>") 'ctags-create-or-update-tags-table))
 #+END_SRC
 
-** TODO Buffer
+** Buffer
 ** Functions
 
    execve
@@ -298,7 +301,7 @@ Exuberant Ctags utilities for Emacs
      (use-package ace-jump-mode
        :ensure t
        :config
-       (define-key global-map (kbd "C-'") 'ace-jump-mode))
+       (define-key global-map (kbd "C-c a") 'ace-jump-mode))
    #+END_SRC
 
 *** ace window
@@ -393,7 +396,7 @@ Exuberant Ctags utilities for Emacs
 
 *** helm-projectile
 
-	helm for projectile
+helm for projectile
 
 	#+BEGIN_SRC emacs-lisp
       (use-package helm-projectile :disabled
@@ -583,23 +586,22 @@ Set conkeror as default web browser
 
 ** Edbi
 
-   Database viewer
-   Need cpan installed
+Database viewer
+Need cpan installed
 
    #+BEGIN_SRC emacs-lisp
-     (use-package edbi
+     (use-package edbi :disabled
        :ensure t)
    #+END_SRC
 
 Handle company mode
 
 #+BEGIN_SRC emacs-lisp
-  (use-package company-edbi
+  (use-package company-edbi :disabled
     :ensure t
     :init
     (add-to-list 'company-backends 'company-edbi))
 #+END_SRC
-
 
 ** Indent
 
@@ -791,6 +793,7 @@ Init Semantic
        :ensure t
        :defer t
        :init
+       (setq projectile-tags-command "ctags-exuberant --languages=-JavaScript -Re -f \"%s\" %s")
        (setq projectile-indexing-method 'native)
        (setq projectile-enable-caching t)
        :config
@@ -1094,6 +1097,17 @@ Powerline-vim port for emacs
        (global-prettify-symbols-mode))
    #+END_SRC
 
+** Tiny
+
+Quickly generate linear ranges in Emacs
+
+#+BEGIN_SRC emacs-lisp
+  (use-package tiny
+    :ensure t
+    :config
+    (global-set-key (kbd "C-;") 'tiny-expand))
+#+END_SRC
+
 ** Color Identifier
 
    Color identifier
@@ -1212,6 +1226,16 @@ Hanlde Company Mode
          (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
          (js2-imenu-extras-mode)))
    #+END_SRC
+
+** Handlebars-Mode
+
+handlebars major mode
+
+#+BEGIN_SRC emacs-lisp
+  (use-package handlebars-mode
+    :ensure t)
+#+END_SRC
+
 
 ** Csv-mode
 
