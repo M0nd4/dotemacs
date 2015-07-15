@@ -189,6 +189,8 @@ add achivement manager
 
 ** Tags
 
+*** Exuberant Ctags
+
 Exuberant Ctags utilities for Emacs
 
 #+BEGIN_SRC emacs-lisp
@@ -200,7 +202,16 @@ Exuberant Ctags utilities for Emacs
     (global-set-key (kbd "<f7>") 'ctags-create-or-update-tags-table))
 #+END_SRC
 
-** Buffer
+*** gtags
+
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ggtags
+    :ensure t)
+#+END_SRC
+
+
+** TODO Buffer
 ** Functions
 
    execve
@@ -414,6 +425,33 @@ helm for projectile
         (global-set-key (kbd "C-c g") 'helm-google)
         (setq browse-url-browser-function 'eww-browse-url))
 	#+END_SRC
+
+*** helm-gtags
+
+helm for gtags
+
+#+BEGIN_SRC emacs-lisp
+  (use-package helm-gtags
+    :ensure t)
+#+END_SRC
+
+** ECB
+
+
+#+BEGIN_SRC emacs-lisp
+
+#+END_SRC
+
+
+Install ECB
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ecb
+    :ensure t
+    :init
+    (setq ecb-examples-bufferinfo-buffer-name nil)
+    :defer t)
+#+END_SRC
 
 ** History
 
@@ -1227,14 +1265,25 @@ Hanlde Company Mode
          (js2-imenu-extras-mode)))
    #+END_SRC
 
-** Handlebars-Mode
+** C/C++ mode
+**** Campany
 
-handlebars major mode
+Company backend support
 
 #+BEGIN_SRC emacs-lisp
-  (use-package handlebars-mode
+  (use-package company-c-headers
     :ensure t)
 #+END_SRC
+
+**** Disaster
+
+Disassemble C/C++ code under cursor in Emacs
+
+#+BEGIN_SRC emacs-lisp
+  (use-package disaster
+    :ensure t)
+#+END_SRC
+
 
 
 ** Csv-mode
