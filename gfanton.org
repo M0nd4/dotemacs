@@ -332,9 +332,9 @@ Exuberant Ctags utilities for Emacs
 
 ** Ido
 
-   install ido
+install ido
 
-   #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
      (use-package ido
        :config
        (progn
@@ -342,11 +342,11 @@ Exuberant Ctags utilities for Emacs
          (ido-everywhere 1)
          (setq ido-default-buffer-method 'selected-window)))
 
-   #+END_SRC
+#+END_SRC
 
-   ido ubiquitous
+ido ubiquitous
 
-   #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
      (use-package ido-ubiquitous
        :ensure t
        :init
@@ -354,33 +354,43 @@ Exuberant Ctags utilities for Emacs
        (setq magit-completing-read-function 'magit-ido-completing-read)
        :config
        (ido-ubiquitous-mode 1))
-   #+END_SRC
+#+END_SRC
 
-   ido yes or no
-   from [[https://github.com/DarwinAwardWinner/ido-yes-or-no/blob/master/ido-yes-or-no.el]]
+ido vertical :disabled
 
-   #+BEGIN_SRC emacs-lisp
-     ;; (define-minor-mode ido-yes-or-no-mode
-     ;;   "Use ido for `yes-or-no-p'."
-     ;;   nil
-     ;;   :global t
-     ;;   :group 'ido)
+#+BEGIN_SRC emacs-lisp
+  (use-package ido-vertical-mode :disabled
+    :ensure t
+    :init
+    (ido-vertical-mode 1)
+    (setq ido-vertical-define-keys 'C-n-and-C-p-only))
+#+END_SRC
 
-     ;; (defun ido-yes-or-no-p (prompt)
-     ;;   "Ask user a yes-or-no question using ido."
-     ;;   (let* ((yes-or-no-prompt (concat prompt " "))
-     ;;          (choices '("yes" "no"))
-     ;;          (answer (ido-completing-read yes-or-no-prompt choices nil 'require-match)))
-     ;;     (string= answer "yes")))
+ido yes or no
+from [[https://github.com/DarwinAwardWinner/ido-yes-or-no/blob/master/ido-yes-or-no.el]]
 
-     ;; (defadvice yes-or-no-p (around use-ido activate)
-     ;;   (if ido-yes-or-no-mode
-     ;;       (setq ad-return-value (ido-yes-or-no-p prompt))
-     ;;     ad-do-it))
+#+BEGIN_SRC emacs-lisp
+  ;; (define-minor-mode ido-yes-or-no-mode
+  ;;   "Use ido for `yes-or-no-p'."
+  ;;   nil
+  ;;   :global t
+  ;;   :group 'ido)
 
-     ;; (provide 'ido-yes-or-no)
-     ;; ido-yes-or-no.el ends here
-   #+END_SRC
+  ;; (defun ido-yes-or-no-p (prompt)
+  ;;   "Ask user a yes-or-no question using ido."
+  ;;   (let* ((yes-or-no-prompt (concat prompt " "))
+  ;;          (choices '("yes" "no"))
+  ;;          (answer (ido-completing-read yes-or-no-prompt choices nil 'require-match)))
+  ;;     (string= answer "yes")))
+
+  ;; (defadvice yes-or-no-p (around use-ido activate)
+  ;;   (if ido-yes-or-no-mode
+  ;;       (setq ad-return-value (ido-yes-or-no-p prompt))
+  ;;     ad-do-it))
+
+  ;; (provide 'ido-yes-or-no)
+  ;; ido-yes-or-no.el ends here
+#+END_SRC
 
 ** Imenus
 
@@ -680,11 +690,18 @@ Init Semantic
 
 ** FTP
 
-   Use ftp in passive
+Use ftp in passive
 
    #+BEGIN_SRC emacs-lisp
      (setq ange-ftp-ftp-program-name "pftp")
    #+END_SRC
+
+disable zsh while using tramp
+
+#+BEGIN_SRC emacs-lisp
+  (eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
+#+END_SRC
+
 
 ** Magit
 
