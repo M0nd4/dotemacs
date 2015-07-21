@@ -192,6 +192,26 @@ add achivement manager
        (setq comment-use-syntax t))
    #+END_SRC
 
+
+   Handling of comment boxes in various styles.
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package rebox2
+       :ensure t
+       :config
+       (setq rebox-style-loop '(24 16))
+       (global-set-key (kbd "C-M-;") 'rebox-dwim))
+   #+END_SRC
+
+   dwin2
+
+   #+BEGIN_SRC emacs-lisp
+     (use-package comment-dwim-2
+       :ensure t
+       :init
+       (global-set-key (kbd "M-;") 'comment-dwim-2))
+   #+END_SRC
+
 ** Tags
 
 *** Exuberant Ctags
