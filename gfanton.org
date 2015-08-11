@@ -617,6 +617,19 @@ Set conkeror as default web browser
   (setq browse-url-browser-function 'browse-url-generic)
 #+END_SRC
 
+** Eimp
+
+Emacs Image Manipulation Package
+
+#+BEGIN_SRC emacs-lisp
+  (use-package eimp
+    :ensure t
+    :config
+    (add-hook 'image-mode-hook 'eimp-mode))
+#+END_SRC
+
+
+
 ** Regexp
 *** visual regexp
 
@@ -658,14 +671,14 @@ Database viewer
 Need cpan installed
 
    #+BEGIN_SRC emacs-lisp
-     (use-package edbi :disabled
+     (use-package edbi
        :ensure t)
    #+END_SRC
 
 Handle company mode
 
 #+BEGIN_SRC emacs-lisp
-  (use-package company-edbi :disabled
+  (use-package company-edbi
     :ensure t
     :init
     (add-to-list 'company-backends 'company-edbi))
