@@ -736,6 +736,16 @@ disable zsh while using tramp
   (eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
 #+END_SRC
 
+** Linum
+*** linum relative
+
+
+#+BEGIN_SRC emacs-lisp
+  (use-package linum-relative
+    :ensure t
+    :config
+    (linum-mode 1))
+#+END_SRC
 
 ** Magit
 
@@ -901,12 +911,12 @@ disable zsh while using tramp
      ;;     (delete-other-windows)))
    #+END_SRC
 
-** Sunrise
+** Sunrise Commander
 
    Sunrise commander file explorer
 
    #+BEGIN_SRC emacs-lisp
-     (use-package sunrise-commander
+     (use-package sunrise-commander :disabled t
        :ensure t
        :config
        (global-set-key (kbd "C-c f") 'sunrise))
@@ -1152,7 +1162,7 @@ Powerline-vim port for emacs
 	Hightlight line
 
 	#+BEGIN_SRC emacs-lisp
-      (use-package hl-line+ :disabled t
+      (use-package hl-line+
         :ensure t
         :config
         (global-hl-line-mode)
@@ -1286,6 +1296,21 @@ Hanlde Company Mode
 	  (setq web-mode-enable-css-colorization t)
 	  (setq web-mode-enable-auto-pairing t))
    #+END_SRC
+
+Emmet-mode
+
+#+BEGIN_SRC emacs-lisp
+  (use-package emmet-mode
+    :ensure t)
+#+END_SRC
+
+Emmet-helm
+
+#+BEGIN_SRC emacs-lisp
+  (use-package helm-emmet
+    :ensure t)
+#+END_SRC
+
 
 ** Js2 Mode
 
