@@ -754,9 +754,9 @@ Init Semantic
 
 Use ftp in passive
 
-   #+BEGIN_SRC emacs-lisp
-     (setq ange-ftp-ftp-program-name "pftp")
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (setq ange-ftp-ftp-program-name "pftp")
+#+END_SRC
 
 disable zsh while using tramp
 
