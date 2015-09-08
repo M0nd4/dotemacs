@@ -598,8 +598,6 @@ Emacs Image Manipulation Package
 
 ** Multi-Cursor
 
-<<<<<<< HEAD
-=======
 Multiple cursors for Emacs.
 
 #+BEGIN_SRC emacs-lisp
@@ -612,7 +610,6 @@ Multiple cursors for Emacs.
     (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this))
 #+END_SRC
 
->>>>>>> 59dc1f77b4073e0449d385869e01fe3ac890f931
 ** Regexp
 *** visual regexp
 
@@ -1100,20 +1097,8 @@ helm for gtags
    Use the Inconsolata font if it’s installed on the system.
 
    #+BEGIN_SRC emacs-lisp
-<<<<<<< HEAD
 	 (when (member "Inconsolata" (font-family-list))
 	   (set-face-attribute 'default nil :font "Inconsolata-9"))
-=======
-     (when (member "Hack" (font-family-list))
-       (set-face-attribute 'default nil :font "Hack-12"))
-   #+END_SRC
-
-   set face attribute height
-
-
-   #+BEGIN_SRC emacs-lisp
-	 (set-face-attribute 'default nil :height 110)
->>>>>>> 59dc1f77b4073e0449d385869e01fe3ac890f931
    #+END_SRC
 
 ** Tabbar
@@ -1364,7 +1349,6 @@ Hanlde Company Mode
 	  (setq web-mode-enable-auto-pairing t))
    #+END_SRC
 
-<<<<<<< HEAD
 Emmet-mode
 
 #+BEGIN_SRC emacs-lisp
@@ -1379,8 +1363,6 @@ Emmet-helm
     :ensure t)
 #+END_SRC
 
-=======
->>>>>>> 59dc1f77b4073e0449d385869e01fe3ac890f931
 ** Js2 Mode
 
    Js2 mode
