@@ -10,7 +10,6 @@
 #+PROPERTY: header-args :tangle yes :comments org
 
 * INTIALISATION
-
 ** Dvorak Mode
 
    #+BEGIN_SRC emacs-lisp
@@ -144,7 +143,6 @@ Use Dialog Box
 
 
 * GLOBAL CONFIGURATION
-
 ** Achivement
 
 add achivement manager
@@ -552,7 +550,6 @@ Company version of ac-html, complete for web,html,emmet,jade,slim modes
     :ensure t)
 #+END_SRC
 
-
 ** Snippets
 
    load yas
@@ -691,7 +688,6 @@ Provides project skeletons for Emacs
     :ensure t)
 
 #+END_SRC
-
 
 ** Cedet
 
@@ -1272,6 +1268,7 @@ Quickly generate linear ranges in Emacs
        :config
        (add-hook 'after-init-hook 'global-color-identifiers-mode))
    #+END_SRC
+
 
 
 
