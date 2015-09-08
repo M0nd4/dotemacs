@@ -9,18 +9,6 @@
 #+STARTUP: indent
 #+PROPERTY: header-args :tangle yes :comments org
 
-*** .emacs
-
-    this lines should be add to =~/.emacs=
-
-    #+BEGIN_SRC emacs-lisp :tangle no
-      (require 'org)
-      (package-initialize)
-      (setq package-enable-at-startup nil)
-      (org-babel-load-file "~/.emacs.d/gfanton.org")
-    #+END_SRC
-
-
 * INTIALISATION
 
 ** Dvorak Mode
@@ -153,6 +141,7 @@ Use Dialog Box
 #+BEGIN_SRC emacs-lisp
   (setq use-dialog-box nil)
 #+END_SRC
+
 
 * GLOBAL CONFIGURATION
 
@@ -437,51 +426,6 @@ from [[https://github.com/DarwinAwardWinner/ido-yes-or-no/blob/master/ido-yes-or
        (global-set-key (kbd "C-x C-a") 'imenus))
    #+END_SRC
 
-** Helm
-*** helm
-
-Incremental and narrowing framework
-
-    #+BEGIN_SRC emacs-lisp
-      (use-package helm
-        :ensure t
-        :config
-        (global-set-key (kbd "C-x a") 'helm-imenu)
-        (global-set-key (kbd "C-x b") 'helm-buffers-list)
-        (global-set-key (kbd "C-x f") 'helm-find-files)
-        (global-set-key (kbd "M-x") 'helm-M-x))
-   #+END_SRC
-
-*** helm-projectile
-
-helm for projectile
-
-	#+BEGIN_SRC emacs-lisp
-      (use-package helm-projectile :disabled
-        :ensure t)
-	#+END_SRC
-
-*** helm-google
-
-	Emacs Helm Interface for quick Google searches
-
-	#+BEGIN_SRC emacs-lisp
-      (use-package helm-google
-        :ensure t
-        :config
-        (global-set-key (kbd "C-c g") 'helm-google)
-        (setq browse-url-browser-function 'eww-browse-url))
-	#+END_SRC
-
-*** helm-gtags
-
-helm for gtags
-
-#+BEGIN_SRC emacs-lisp
-  (use-package helm-gtags
-    :ensure t)
-#+END_SRC
-
 ** History
 
    save history
@@ -579,12 +523,16 @@ Show tooltip at point
 
 ** Company
 
+*** company mode
+
    #+BEGIN_SRC emacs-lisp
      (use-package company
        :ensure t
        :config
        (add-hook 'prog-mode-hook 'company-mode))
    #+END_SRC
+
+*** company doc
 
 Popup documentation for completion candidates
 
@@ -594,6 +542,16 @@ Popup documentation for completion candidates
     :init
     (company-quickhelp-mode nil))
 #+END_SRC
+
+*** company web
+
+Company version of ac-html, complete for web,html,emmet,jade,slim modes
+
+#+BEGIN_SRC emacs-lisp
+  (use-package company-web
+    :ensure t)
+#+END_SRC
+
 
 ** Snippets
 
@@ -606,6 +564,20 @@ Popup documentation for completion candidates
        (setq yas-snippet-dirs "~/.emacs.d/snippets") ;; not really need - default yas folder
        (yas-global-mode 1))
    #+END_SRC
+
+** Emmet
+
+#+BEGIN_SRC emacs-lisp
+  (use-package emmet-mode
+    :ensure t
+    :defer t
+    :config
+    (eval-after-load 'web-mode
+      '(define-key web-mode-map (kbd "TAB") 'emmet-expand-line))
+    (add-hook 'css-mode-hook  'emmet-mode)
+    (eval-after-load 'css-mode
+      '(define-key css-mode-map (kbd "TAB") 'emmet-expand-line)))
+#+END_SRC
 
 ** Conkeror
 
@@ -627,7 +599,23 @@ Emacs Image Manipulation Package
     (add-hook 'image-mode-hook 'eimp-mode))
 #+END_SRC
 
+** Multi-Cursor
 
+<<<<<<< HEAD
+=======
+Multiple cursors for Emacs.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package multiple-cursors
+    :ensure t
+    :config
+    (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+    (global-set-key (kbd "C->") 'mc/mark-next-like-this)
+    (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+    (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this))
+#+END_SRC
+
+>>>>>>> 59dc1f77b4073e0449d385869e01fe3ac890f931
 ** Regexp
 *** visual regexp
 
@@ -694,11 +682,22 @@ Handle company mode
      (c-set-offset 'substatement-open 0)   ;;; No indent for open bracket
    #+END_SRC
 
+** skeletor
+
+Provides project skeletons for Emacs
+
+#+BEGIN_SRC emacs-lisp
+  (use-package skeletor
+    :ensure t)
+
+#+END_SRC
+
+
 ** Cedet
 
 Init Semantic
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC xaemacs-lisp
       (semantic-mode 1)
 #+END_SRC
 
@@ -997,6 +996,61 @@ disable zsh while using tramp
      ;;  '(browse-url-browser-function (quote browse-url-conkeror)))
    #+END_SRC
 
+** Helm
+*** helm
+
+Incremental and narrowing framework
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package helm
+        :ensure t
+        :config
+        (global-set-key (kbd "C-x a") 'helm-imenu)
+        (global-set-key (kbd "C-x b") 'helm-buffers-list)
+        (global-set-key (kbd "C-x f") 'helm-find-files)
+        (global-set-key (kbd "M-x") 'helm-M-x))
+   #+END_SRC
+
+*** helm-projectile
+
+helm for projectile
+
+	#+BEGIN_SRC emacs-lisp
+      (use-package helm-projectile :disabled
+        :ensure t)
+	#+END_SRC
+
+*** helm-google
+
+	Emacs Helm Interface for quick Google searches
+
+	#+BEGIN_SRC emacs-lisp
+      (use-package helm-google
+        :ensure t
+        :config
+        (global-set-key (kbd "C-c g") 'helm-google)
+        (setq browse-url-browser-function 'eww-browse-url))
+	#+END_SRC
+
+*** helm-gtags
+
+helm for gtags
+
+#+BEGIN_SRC emacs-lisp
+  (use-package helm-gtags
+    :ensure t)
+#+END_SRC
+
+*** helm-emmet
+
+#+BEGIN_SRC emacs-lisp
+   (use-package helm-emmet
+     :ensure t
+     :config
+     (eval-after-load 'web-mode
+                      '(define-key web-mode-map (kbd "C-j") 'helm-emmet)))
+#+END_SRC
+
 
 * VISUAL
 ** Color Theme
@@ -1050,8 +1104,20 @@ disable zsh while using tramp
    Use the Inconsolata font if it’s installed on the system.
 
    #+BEGIN_SRC emacs-lisp
+<<<<<<< HEAD
 	 (when (member "Inconsolata" (font-family-list))
 	   (set-face-attribute 'default nil :font "Inconsolata-9"))
+=======
+     (when (member "Hack" (font-family-list))
+       (set-face-attribute 'default nil :font "Hack-12"))
+   #+END_SRC
+
+   set face attribute height
+
+
+   #+BEGIN_SRC emacs-lisp
+	 (set-face-attribute 'default nil :height 110)
+>>>>>>> 59dc1f77b4073e0449d385869e01fe3ac890f931
    #+END_SRC
 
 ** Tabbar
@@ -1301,6 +1367,7 @@ Hanlde Company Mode
 	  (setq web-mode-enable-auto-pairing t))
    #+END_SRC
 
+<<<<<<< HEAD
 Emmet-mode
 
 #+BEGIN_SRC emacs-lisp
@@ -1315,6 +1382,8 @@ Emmet-helm
     :ensure t)
 #+END_SRC
 
+=======
+>>>>>>> 59dc1f77b4073e0449d385869e01fe3ac890f931
 ** Js2 Mode
 
    Js2 mode
@@ -1330,7 +1399,7 @@ Emmet-helm
    #+END_SRC
 
 ** C/C++ mode
-*** Campany
+*** Campany c mode
 
 Company backend support
 
