@@ -592,7 +592,6 @@ Company version of ac-html, complete for web,html,emmet,jade,slim modes
 #+BEGIN_SRC emacs-lisp
   (use-package emmet-mode
     :ensure t
-    :defer t
     :config
     (eval-after-load 'web-mode
       '(define-key web-mode-map (kbd "TAB") 'emmet-expand-line))
