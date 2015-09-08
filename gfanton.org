@@ -412,6 +412,16 @@ from [[https://github.com/DarwinAwardWinner/ido-yes-or-no/blob/master/ido-yes-or
   ;; ido-yes-or-no.el ends here
 #+END_SRC
 
+** Facebook
+
+#+BEGIN_SRC emacs-lisp
+  (let ((fbfile "~/.emacs.d/facebook.el"))
+    (progn
+      (if (not (file-exists-p fbfile))
+               (url-copy-file "http://www.emacswiki.org/emacs/download/facebook.el" fbfile))
+      (load-file fbfile)))
+#+END_SRC
+
 ** Imenus
 
    list all methods
