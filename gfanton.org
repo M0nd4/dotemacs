@@ -872,6 +872,110 @@ disable zsh while using tramp
        :ensure t)
    #+END_SRC
 
+Allow to switch from current user to sudo when browsind `dired' buffers.
+To activate and swit with "C-c C-s" just put in your .emacs:
+*source:* [[dired toogle sudo by][https://github.com/renard/dired-toggle-sudo/blob/master/dired-toggle-sudo.el]]
+
+   #+BEGIN_SRC emacs-lisp
+     (eval-when-compile (require 'files))
+     (eval-when-compile (require 'tramp))
+     (eval-when-compile (require 'dired))
+
+     (defun dired-toggle-sudo-internal (path &optional sudo-user)
+       "Convert PATH to its sudoed version. root is used by default
+     unless SUDO-USER is provided."
+       (let* ((file-vec (or (ignore-errors (tramp-dissect-file-name
+                                            path))
+                            (tramp-dissect-file-name
+                             (concat "/:" path) 1)))
+              (method  (tramp-file-name-method file-vec))
+              (user (tramp-file-name-user file-vec))
+              (host  (tramp-file-name-host file-vec))
+              (localname (expand-file-name
+                          (tramp-file-name-localname file-vec))))
+         (when (string= system-name host)
+           (setq host nil))
+         (cond
+          ;; remote directory -> sudo
+          ((and host (string= method "scp"))
+           (setq method "sudo" user sudo-user))
+          ;; remote directory -> normal
+          ((and host (string= method "sudo"))
+           (setq method "scp" user nil))
+          ;; Local directory -> normal
+          ((and (not host) (string= method "scp"))
+           (setq method "sudo"))
+          ;; Local directory -> sudo
+          ((and (not host) (string= method "sudo"))
+           (setq method nil user sudo-user))
+          ;; Local directory -> normal
+          (t
+           (setq method "sudo" user sudo-user)))
+         (replace-regexp-in-string
+          "^/:/" "/"
+          (tramp-make-tramp-file-name method user host localname))))
+
+     (defun dired-toggle-sudo-find (fname)
+       "Create a new buffer for file name FNAME."
+       (let ((save-point (point)))
+         (find-alternate-file fname)
+         (goto-char save-point)))
+
+     ;;;###autoload
+     (defun dired-toggle-sudo (&optional sudo-user)
+       "Reopen current file or dired buffer with sudo.
+     If SUDO-USER is nil assume root.
+     If called with `universal-argument' (C-u), ask for username.
+     "
+       (interactive "P")
+       (let* ((fname (or buffer-file-name
+                         dired-directory))
+              (sudo-user (if current-prefix-arg
+                             (read-string "Username: ")
+                           sudo-user))
+              (orig (current-buffer)))
+         (when fname
+           (setq fname (dired-toggle-sudo-internal fname sudo-user))
+           (if (not (eq major-mode 'dired-mode))
+               (dired-toggle-sudo-find fname)
+             (kill-buffer orig)
+             (dired fname)))))
+
+     (provide 'dired-toggle-sudo)
+   #+END_SRC
+
+** Docker
+
+Emacs interface to Docker
+
+#+BEGIN_SRC emacs-lisp
+  (use-package docker
+    :ensure t
+    :config
+    (docker-global-mode))
+#+END_SRC
+
+TRAMP integration for docker containers
+
+#+BEGIN_SRC emacs-lisp
+  (use-package docker-tramp
+    :ensure t)
+#+END_SRC
+
+Major mode for editing Docker's Dockerfiles
+
+#+BEGIN_SRC emacs-lisp
+  (use-package dockerfile-mode
+    :ensure t)
+#+END_SRC
+
+** Face
+
+#+BEGIN_SRC emacs-lisp
+
+
+#+END_SRC
+
 ** Projectile
 
    Manage and navigate projects in Emacs easily
