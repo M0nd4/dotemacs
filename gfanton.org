@@ -30,7 +30,6 @@
 
     #+BEGIN_SRC emacs-lisp
       (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
-      (add-to-list 'package-archives '("SC" . "http://joseito.republika.pl/sunrise-commander/") t)
       (add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/") t)
       (unless (assoc-default "melpa" package-archives)
         (progn
