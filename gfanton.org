@@ -1651,3 +1651,12 @@ toogle vertical split macro
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-x |") 'toggle-window-split)
 #+END_SRC
+
+
+* USELESS MODE
+** Zone Mode
+
+#+BEGIN_SRC emacs-lisp
+  (require 'zone)
+  (zone-when-idle 120)
+#+END_SRC
