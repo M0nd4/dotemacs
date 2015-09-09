@@ -426,15 +426,22 @@ from [[https://github.com/DarwinAwardWinner/ido-yes-or-no/blob/master/ido-yes-or
   ;; (provide 'ido-yes-or-no)
   ;; ido-yes-or-no.el ends here
 #+END_SRC
+** Jabber
+
+#+BEGIN_SRC emacs-lisp
+(use-package jabber
+  :ensure t)
+#+END_SRC
+
 
 ** Facebook
 
 #+BEGIN_SRC emacs-lisp
-  (let ((fbfile "~/.emacs.d/facebook.el"))
-    (progn
-      (if (not (file-exists-p fbfile))
-               (url-copy-file "http://www.emacswiki.org/emacs/download/facebook.el" fbfile))
-      (load-file fbfile)))
+;;  (let ((fbfile "~/.emacs.d/facebook.el"))
+;;    (progn
+;;      (if (not (file-exists-p fbfile))
+;;               (url-copy-file "http://www.emacswiki.org/emacs/download/facebook.el" fbfile))
+;;      (load-file fbfile)))
 #+END_SRC
 
 ** Imenus
