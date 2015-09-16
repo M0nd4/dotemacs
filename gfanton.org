@@ -427,9 +427,14 @@ Clipboard monitor - watch system clipboard, add changes to kill ring/autoinsert
 
 ** Jabber
 
+A Jabber client for Emacs.
+
 #+BEGIN_SRC emacs-lisp
 (use-package jabber
-  :ensure t)
+  :ensure t
+  :config
+  (remove-hook 'jabber-alert-presence-hooks
+               'sr-jabber-alert-presence-func))
 #+END_SRC
 
 
