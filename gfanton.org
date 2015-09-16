@@ -465,16 +465,6 @@ disable locate-dominating-file frequently over tramp causes huge slowdown.
     ad-do-it))
 #+END_SRC
 
-** Facebook
-
-#+BEGIN_SRC emacs-lisp
-;;  (let ((fbfile "~/.emacs.d/facebook.el"))
-;;    (progn
-;;      (if (not (file-exists-p fbfile))
-;;               (url-copy-file "http://www.emacswiki.org/emacs/download/facebook.el" fbfile))
-;;      (load-file fbfile)))
-#+END_SRC
-
 ** Imenus
 
    list all methods
@@ -1029,13 +1019,6 @@ Major mode for editing Docker's Dockerfiles
 #+BEGIN_SRC emacs-lisp
   (use-package dockerfile-mode
     :ensure t)
-#+END_SRC
-
-** Face
-
-#+BEGIN_SRC emacs-lisp
-
-
 #+END_SRC
 
 ** SVG
