@@ -414,6 +414,17 @@ from [[https://github.com/DarwinAwardWinner/ido-yes-or-no/blob/master/ido-yes-or
   ;; (provide 'ido-yes-or-no)
   ;; ido-yes-or-no.el ends here
 #+END_SRC
+** Clipmon
+
+Clipboard monitor - watch system clipboard, add changes to kill ring/autoinsert
+
+#+BEGIN_SRC emacs-lisp
+  (use-package clipmon
+    :ensure t
+    :config
+    (global-set-key (kbd "<M-f2>") 'clipmon-autoinsert-toggle))
+#+END_SRC
+
 ** Jabber
 
 #+BEGIN_SRC emacs-lisp
