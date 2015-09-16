@@ -69,9 +69,8 @@
           ,@body))
    #+END_SRC
 
-*** path
-*** copy and past
-**** MAC OSX
+** copy and past
+*** MAC OSX
 
      #+BEGIN_SRC emacs-lisp
        (defun copy-from-osx ()
@@ -90,25 +89,14 @@
                     (setq interprogram-paste-function 'copy-from-osx))
      #+END_SRC
 
-**** linux
+*** linux
 
 Clipboard
 
-     #+BEGIN_SRC emacs-lisp
-       (with-system 'gnu/linux (progn
-                                 (setq x-select-enable-clipboard t)
-                                 (defun xsel-cut-function (text &optional push)
-                                   (with-temp-buffer
-                                     (insert text)
-                                     (call-process-region (point-min) (point-max) "xsel" nil 0 nil "--clipboard" "--input")))
-                                 (defun xsel-paste-function()
-
-                                   (let ((xsel-output (shell-command-to-string "xsel --clipboard --output")))
-                                     (unless (string= (car kill-ring) xsel-output)
-                                       xsel-output )))
-                                 (setq interprogram-cut-function 'xsel-cut-function)
-                                 (setq interprogram-paste-function 'xsel-paste-function)))
-     #+END_SRC
+#+BEGIN_SRC emacs-lisp
+(setq x-select-enable-clipboard t)
+(setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
+#+END_SRC
 
 ** Load Files
 *** private
