@@ -1602,6 +1602,33 @@ Password generator for humans. Good, Bad, Phonetic passwords included.
     :ensure t)
 #+END_SRC
 
+** Org Anotate
+
+
+#+BEGIN_SRC emacs-lisp
+  (use-package annotate
+    :ensure t)
+
+#+END_SRC
+
+** Presentation
+*** ox-impress-js
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ox-impress-js
+    :ensure t)
+#+END_SRC
+
+*** ox-reveal
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ox-reveal
+    :ensure t
+    :config
+    (setq org-reveal-root "file:///reveal.js"))
+#+END_SRC
+
+*** ox-
 
 * SPECIAL BINDING
 ** Execute
