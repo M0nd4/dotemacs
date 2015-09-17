@@ -1628,7 +1628,14 @@ Password generator for humans. Good, Bad, Phonetic passwords included.
     (setq org-reveal-root "file:///reveal.js"))
 #+END_SRC
 
-*** ox-
+*** ox-rst
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ox-rst
+    :ensure t)
+#+END_SRC
+
+
 
 * SPECIAL BINDING
 ** Execute
