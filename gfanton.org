@@ -1454,14 +1454,6 @@ Hanlde Company Mode
     :ensure t)
 #+END_SRC
 
-
-#+BEGIN_SRC emacs-lisp
-  (eval-after-load 'php
-    '(define-key php-mode-map (kbd "C-c j v")
-       (lambda () (interactive)
-         (ace-jump-char-mode '$'))))
-#+END_SRC
-
 ** Web Mode
 
   Web Mode
