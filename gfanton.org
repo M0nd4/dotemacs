@@ -728,7 +728,7 @@ Handle company mode
      (c-set-offset 'substatement-open 0)   ;;; No indent for open bracket
    #+END_SRC
 
-** skeletor
+** Skeletor
 
 Provides project skeletons for Emacs
 
@@ -856,7 +856,7 @@ disable zsh while using tramp
 
 ** GitGutter
 
-   Port of Sublime Text plugin GitGutter
+Port of Sublime Text plugin GitGutter
 
    #+BEGIN_SRC emacs-lisp
      (use-package git-gutter
@@ -1729,3 +1729,5 @@ load private file
   (if (file-exists-p private)
 	  (load-file private)))
 #+END_SRC
+
+; gfanton.el ends here
