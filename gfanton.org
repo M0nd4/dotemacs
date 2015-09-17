@@ -867,6 +867,15 @@ disable zsh while using tramp
        (set-face-foreground 'git-gutter:separator "black"))
    #+END_SRC
 
+** Prodigy
+
+Manage external services from within Emacs
+
+#+BEGIN_SRC emacs-lisp
+  (use-package prodigy
+    :ensure t)
+#+END_SRC
+
 ** Tweek
 *** lorem ipsem
 
